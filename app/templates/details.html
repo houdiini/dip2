@@ -1,0 +1,54 @@
+<div class="wrapper" ng-if="activeUser">
+	<header>Детальна інформація</header>
+	<div class="content">
+	<table>
+		<tbody>
+			<tr>
+				<td>{{db.users[activeUser].fName}}
+					<span>{{ db.users[activeUser].sName }}</span>
+				</td>
+			</tr>
+			<tr>
+				<td>Сума</td>
+				<td>
+					<span>{{ sum(activeUser) | number}} ₴</span>
+				</td>
+			</tr>
+			<tr>
+				<td>Прибуток</td>
+				<td><span>{{ db.users[activeUser].income | number }} ₴</span></td>
+			</tr>
+			<tr>
+		</tbody>
+	</table>
+
+		<span class="separator">Кредит</span>
+		<table class="bordered">
+			<tr>
+				<td>Початок</td>
+				<td>{{  getDate(db.users[activeUser].credits.start) }}</td>
+			</tr>
+			<tr>
+				<td>Термін закінчиння</td>
+				<td>{{ getDate(db.users[activeUser].credits.finish) }}</td>
+			</tr>
+			<tr>
+				<td>Сума кредиту</td>
+				<td>{{ db.users[activeUser].credits.amount | number:0}} ₴</td>
+			</tr>
+			<tr>
+				<td> Виплачний</td>
+				<td>{{ db.users[activeUser].credits.overdue ? 'Не виплачений!' : 'Виплачний!' }}</td>
+			</tr>
+		</table>
+		<span class="separator">Історія платежів</span>
+		<table class="bordered">
+			<tr ng-repeat="pay in db.users[activeUser].credits.history track by $index">
+				<td>
+					{{pay | number:2}} ₴
+				</td>
+			</tr>			
+		</table>
+		
+	</div>
+</div>

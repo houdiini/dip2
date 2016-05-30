@@ -1,0 +1,149 @@
+* {
+  box-sizing: border-box; }
+
+body {
+  background: #EDEDED;
+  color: #0B181D; }
+
+.icon {
+  display: inline-block;
+  margin-top: 5px;
+  width: 1em;
+  height: 1em;
+  fill: currentColor; }
+
+.separator {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  /*border: $border_settings;*/
+  background: gainsboro;
+  margin: 0; }
+
+.btn {
+  display: inline-block;
+  border: none;
+  background: transparent;
+  font-size: .8em;
+  text-align: center;
+  text-decoration: none;
+  color: #0B181D;
+  padding: 10px;
+  margin: auto; }
+  .btn:hover {
+    background: #DEDEED; }
+  .btn.full {
+    display: block;
+    width: 100%; }
+
+.adress_bar {
+  width: 100%;
+  height: 40px;
+  background: #fff;
+  border-bottom: 1px solid gainsboro; }
+  .adress_bar .adress-input {
+    width: 75%;
+    height: 30px;
+    margin: 5px;
+    padding: 0 5px;
+    float: left; }
+  .adress_bar .btn-adress {
+    width: calc(25% - 15px);
+    height: 30px;
+    padding: 5px;
+    float: left;
+    margin: 5px 5px 5px 0;
+    border: none;
+    background: transparent;
+    font-size: .8em; }
+    .adress_bar .btn-adress:hover {
+      background: #DEDEED; }
+
+.user_list {
+  min-width: 145px;
+  height: calc(100% - 40px);
+  position: absolute;
+  top: 40px;
+  float: left;
+  border-right: 1px solid gainsboro;
+  background: #fff;
+  overflow: hidden;
+  text-align: left; }
+  .user_list .wrapper > .header {
+    text-align: center;
+    padding: 0;
+    border-bottom: 1px solid gainsboro; }
+  .user_list .ui.list {
+    position: absolute;
+    font-size: .9em;
+    width: 100%;
+    height: calc(100% - 60px);
+    overflow-y: scroll;
+    text-align: left; }
+    .user_list .ui.list .item {
+      padding: 5px; }
+      .user_list .ui.list .item:hover {
+        background: #E1E7E1; }
+      .user_list .ui.list .item.select {
+        background: #DEDEED; }
+  .user_list .wrapper > .footer {
+    width: 100%;
+    height: 25px;
+    font-size: .8em;
+    text-align: center;
+    background: #f2f2f2;
+    border-top: 1px solid gainsboro;
+    position: absolute;
+    bottom: 0; }
+    .user_list .wrapper > .footer span {
+      display: block;
+      float: left;
+      width: 75%;
+      line-height: 23px; }
+    .user_list .wrapper > .footer .nav {
+      width: 10%; }
+
+.details {
+  width: 50%;
+  margin-left: 145px;
+  padding: 10px;
+  position: absolute;
+  height: calc(100% - 40px);
+  overflow-y: scroll; }
+  .details .wrapper {
+    width: 100%;
+    background: #fff;
+    border: 1px solid gainsboro; }
+  .details header {
+    width: 100%;
+    padding: 10px;
+    background: #F2F9F9;
+    border-bottom: 1px solid gainsboro; }
+  .details .content {
+    /*padding: 10px ;*/ }
+  .details table {
+    width: 100%;
+    /*margin: 1em 0em;*/
+    box-shadow: none;
+    text-align: left;
+    border-collapse: separate;
+    border-spacing: 0px; }
+    .details table.bordered {
+      border: 1px solid gainsboro; }
+      .details table.bordered tr td {
+        border-top: 1px solid gainsboro;
+        border-right: 1px solid gainsboro; }
+      .details table.bordered tr:first-child td {
+        border-top: none; }
+      .details table.bordered td:last-child {
+        border-right: none; }
+    .details table tr {
+      width: 100%;
+      height: 25px;
+      border-top: 1px solid rgba(34, 36, 38, 0.1); }
+      .details table tr td {
+        min-width: 100px;
+        vertical-align: top;
+        padding: 10px; }
+
+/*# sourceMappingURL=style.css.map */

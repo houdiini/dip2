@@ -1,0 +1,207 @@
+
+$color_bg: #EDEDED;
+$color_border: $color_bg - #111;
+$color_main: #fff;
+$color_akcent: #F2F9F9;
+$color_text: #0B181D;
+$color_active: #DEDEED;
+$color_hover: #E1E7E1;
+
+$border_settings: 1px solid $color_border;
+
+$padding_size: 5px;
+
+* {
+	box-sizing: border-box; 
+}
+
+body {
+	background: $color_bg;
+	color: $color_text;
+}
+
+.icon {
+	display: inline-block;
+	margin-top: 5px;
+	width: 1em;
+	height: 1em;
+	fill: currentColor;
+}
+
+.separator {
+	display: block;
+	width: 100%;
+	padding: 5px;
+	/*border: $border_settings;*/
+	background: $color_border;
+	margin: 0;
+}
+
+
+//	Buttons 
+
+.btn {
+	display: inline-block;
+	border: none;
+	background: transparent;
+	font-size: .8em;
+	text-align: center;
+	text-decoration: none;
+	color: $color_text;
+	padding: 10px;
+	margin: auto;
+	&:hover {
+		background: $color_active;
+	}
+	&.full {
+		display: block;
+		width: 100%;
+	}
+}
+
+//	Adress bar 
+
+.adress_bar {
+	width: 100%;
+	height: 40px;
+	background: $color_main;
+	border-bottom: $border_settings;
+	.adress-input {
+		width: 75%;
+		height: 30px;
+		margin: 5px;
+		padding: 0 5px;
+		float: left;
+	}
+	.btn-adress {
+		width: calc(25% - 15px);
+		height: 30px;
+		padding: 5px;
+		float: left;
+		margin: 5px 5px 5px 0;
+		border: none;
+		background: transparent;
+		font-size: .8em;
+		&:hover {
+			background: $color_active;
+		}
+	}
+
+}
+
+
+// List 
+
+.user_list {
+    min-width: 145px;
+    height: calc(100% - 40px);
+    position: absolute;
+    top: 40px;
+    float: left;
+    border-right: 1px solid $color_border;
+    background: $color_main;
+    overflow: hidden;
+    text-align: left;
+    .wrapper > .header {
+    	text-align: center;
+    	padding: 0;
+    	border-bottom: $border_settings;
+    }
+    .ui.list {
+    	position: absolute;
+    	font-size: .9em;
+    	width: 100%;
+    	height: calc(100% - 60px);
+	    overflow-y: scroll;
+	    text-align: left;
+    	.item {
+    		padding: $padding_size;
+    		&:hover {
+				background: $color_hover;
+    		}
+    		&.select {
+    			background: $color_active;
+    		}
+    	}
+    }
+    .wrapper > .footer {
+    	width: 100%;
+		height: 25px;
+		font-size: .8em;
+		text-align: center;
+		background: $color_bg + #050505;
+		border-top: $border_settings;
+		position: absolute;
+		bottom: 0;
+		span {
+			display: block;
+			float: left;
+			width: 75%;
+			line-height: 23px;
+		}
+		.nav {
+			width: 10%;
+		}
+    } 
+}
+
+
+//	Details 
+
+.details {
+	width: 50%;
+	margin-left: 145px;
+	padding: 10px;
+	position: absolute;
+	height: calc(100% - 40px);
+	overflow-y: scroll;	
+	.wrapper {
+		width: 100%;
+		background: $color_main;
+		border: $border_settings;
+	}
+	header {
+		width: 100%;
+		padding: 10px;
+		background: $color_akcent;
+		border-bottom: $border_settings
+	}
+	.content {
+		/*padding: 10px ;*/
+	}
+	table {
+		width: 100%;
+		/*margin: 1em 0em;*/
+		box-shadow: none;
+		text-align: left;
+		border-collapse: separate;
+		border-spacing: 0px;
+		&.bordered {
+			border: $border_settings;
+			tr td{
+				border-top: $border_settings;
+				border-right: $border_settings;
+			}
+			tr:first-child td{
+				border-top: none;
+			}
+			td:last-child {
+				border-right: none;
+			}
+		}
+		tr {
+			width: 100%;
+			height: 25px;
+			border-top: 1px solid rgba(34, 36, 38, 0.1);
+			td {
+				min-width: 100px;
+				vertical-align: top;
+				padding: 10px;
+
+			}
+		}
+	}
+}
+
+
+

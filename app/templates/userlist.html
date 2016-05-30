@@ -1,0 +1,16 @@
+<div class="wrapper">
+	<div class="header"><a href="#" class="btn ui-btn full">Додати клієнта</a></div>
+	<div class="ui middle aligned selection list">
+		<div class="item" ng-class="{select: db.users.indexOf(item) === activeUser}" ng-repeat="item in db.users | limitTo:100:begin" id="{{db.users.indexOf(item)}}" ng-click="extraInfo(db.users.indexOf(item))">
+			<div class="content">
+				<div class="header">{{item.fName}} {{item.sName}}</div>
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+		<span class="nav" ng-click="nav('prev')"><svg class="icon icon-skip_previous"><use xlink:href="#icon-skip_previous"></use></svg></span>
+		<span>{{begin}}-{{begin+1*100}}/{{db.users.length}}</span>
+		<span class="nav" ng-click="nav('next')"><svg class="icon icon-skip_previous"><use xlink:href="#icon-skip_next"></use></svg></span>
+	</div>
+
+</div>
