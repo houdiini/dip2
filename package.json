@@ -12,6 +12,7 @@
     "xlsx": "^0.8.0"
   },
   "dependencies": {
+    "angular-nvd3": "^1.0.7",
     "mongodb": "^2.1.20"
   }
 }

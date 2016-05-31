@@ -1,0 +1,61 @@
+<div class="wrapper" ng-class="{close: !graph_flag, show: grap_flag}">
+	<header>
+		<div class="tools">
+			<a href="#" class="btn" ng-click="toggle_graph_bar()"><span><svg class="icon icon-keyboard_arrow_right"><use xlink:href="#icon-keyboard_arrow_right"></use></svg></span></a>
+			<label for="add_graph" ng-click="toggle_add_bar()">
+				<a href="#" class="btn"><span><svg class="icon icon-add"><use xlink:href="#icon-add"></use></svg></span><span>Додати</span></a>
+			</label>
+			<input id="add_graph" class="hide" type="checkbox" />
+		</div>
+	</header>
+
+	<div class="content" ng-drop="false">
+		<div class="graph" resizable  r-directions="['bottom']" r-flex="false" ng-drag="false" ng-repeat="graph in graphs" id="{{graphs.indexOf(graph)}}">
+			<header>
+				<div class="tools">
+					<a href="#" class="btn" ng-click="remove_graph(graph)"><span><svg class="icon delete_forever"><use xlink:href="#icon-remove"></use></svg></span></a>
+				</div>
+			</header>
+			<nvd3 options="graph.options" data="graph.data"></nvd3>
+		</div>
+	</div>
+
+	<div class="add_graph" ng-class="{close: !add_graph, show: add_graph}">
+		<div class="graph">
+		<!-- <nvd3 options="options" data="data" class="with-3d-shadow with-transitions"></nvd3> -->
+    
+			<nvd3 options="add.graph.options" data="add.graph.data"></nvd3>
+						<!-- 
+			{{add.graph.labels}}
+			{{add.graph.data}} -->
+		</div>
+		<div class="parameters">
+
+			<div class="field">
+				<label for="x">x</label>
+				<select name="x" id="x" ng-model="add.param.x" ng-click="add_graph_update()">
+					<option value="age">Вік</option>
+					<option value="income">Прибуток</option>
+					<option value="amount">Сума</option>
+					<option value="creditAmount">Сума кредиту</option>
+				</select>
+			</div>
+			<div class="field">
+				<label for="y">y</label>
+				<select name="y" id="y" ng-model="add.param.y" ng-click="add_graph_update()">
+					<option value="age">Вік</option>
+					<option value="income">Прибуток</option>
+					<option value="creditAmount">Сума кредиту</option>
+					<option value="amount">Сума</option>
+					<option value="count_true">К-ть виплачних</option>
+					<option value="count_false">К-ть невиплачних</option>
+				</select>
+			</div>
+			<a href="#" class="btn full" ng-click="save_graph()">Додати</a>
+		</div>
+	</div>
+</div>
+
+<div class="settings" ng-class="{close: !settings, show: settings}">
+	
+</div>

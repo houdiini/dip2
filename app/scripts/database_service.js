@@ -12,9 +12,7 @@ angular.module ('BI.Mongo', [])
         url = val;
     }
     var findAllDocuments = function(callback) {
-        console.log(url);
-        MongoClient.connect( url, function(err, db) {
-          console.log('click');
+        return MongoClient.connect( url, function(err, db) {
           var collection = db.collection('users');
           collection.find({}).toArray(function(err, docs) {
             console.log(docs);

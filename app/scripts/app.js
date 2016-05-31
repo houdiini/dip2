@@ -1,7 +1,7 @@
 var fs = require ("fs");
 var xlsx = require('xlsx');
 var ipc = require('electron').ipcRenderer;
-angular.module('BI', ['ngSanitize', 'ngAnimate', 'ui.router', 'BI.services', 'BI.controllers', 'BI.filters', 'BI.Mongo'])
+angular.module('BI', ['ngSanitize', 'nvd3', 'angularResizable', 'ui.router', 'BI.services', 'BI.controllers', 'BI.filters', 'BI.Mongo'])
 
 .config(function($stateProvider, $urlRouterProvider){
 
@@ -31,6 +31,10 @@ angular.module('BI', ['ngSanitize', 'ngAnimate', 'ui.router', 'BI.services', 'BI
                 },
                 'graphs': {
                     templateUrl: 'templates/graphs.html',
+                    controller: 'usersCtrl'
+                },
+                'add_user': {
+                    templateUrl: 'templates/add_user.html',
                     controller: 'usersCtrl'
                 }
             }

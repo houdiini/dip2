@@ -2,8 +2,17 @@
   box-sizing: border-box; }
 
 body {
-  background: #EDEDED;
+  background: #D7D7D7;
   color: #0B181D; }
+
+body > .content {
+  width: 100%;
+  height: calc(100% - 40px);
+  position: absolute;
+  overflow: hidden; }
+
+.hide {
+  display: none; }
 
 .icon {
   display: inline-block;
@@ -16,8 +25,10 @@ body {
   display: block;
   width: 100%;
   padding: 5px;
-  /*border: $border_settings;*/
-  background: gainsboro;
+  border: 1px solid #c6c6c6;
+  border-left: none;
+  border-right: none;
+  background: #F1F1F1;
   margin: 0; }
 
 .btn {
@@ -27,11 +38,12 @@ body {
   font-size: .8em;
   text-align: center;
   text-decoration: none;
-  color: #0B181D;
+  color: #fff;
   padding: 10px;
-  margin: auto; }
+  margin: auto;
+  background: #3384E3; }
   .btn:hover {
-    background: #DEDEED; }
+    background: #1162c1; }
   .btn.full {
     display: block;
     width: 100%; }
@@ -40,7 +52,7 @@ body {
   width: 100%;
   height: 40px;
   background: #fff;
-  border-bottom: 1px solid gainsboro; }
+  border-bottom: 1px solid #c6c6c6; }
   .adress_bar .adress-input {
     width: 75%;
     height: 30px;
@@ -54,25 +66,84 @@ body {
     float: left;
     margin: 5px 5px 5px 0;
     border: none;
-    background: transparent;
+    /*background: transparent;*/
     font-size: .8em; }
-    .adress_bar .btn-adress:hover {
-      background: #DEDEED; }
+
+.add_graph {
+  transition: 200ms;
+  position: absolute;
+  z-index: 100;
+  top: 30px;
+  background: #fff;
+  width: 100%;
+  height: calc(100% - 40px); }
+  .add_graph.show {
+    left: 0; }
+  .add_graph.close {
+    left: 100%; }
+  .add_graph .field {
+    width: 100%;
+    padding: 10px; }
+    .add_graph .field label {
+      padding: 2px;
+      margin-right: 20px; }
+    .add_graph .field select {
+      width: 150px; }
+
+.graphs {
+  width: calc(50% - 145px);
+  height: 100%;
+  position: absolute;
+  right: 0;
+  background: #fff;
+  border-left: 1px solid #c6c6c6;
+  transition: all 250ms;
+  overflow: hidden; }
+  .graphs header {
+    background: #F1F1F1;
+    border-bottom: 1px solid #c6c6c6;
+    height: 25px; }
+    .graphs header .tools .btn {
+      height: 25px;
+      padding: 0px 5px;
+      line-height: 24px;
+      background: transparent;
+      color: #0B181D; }
+      .graphs header .tools .btn span {
+        float: left;
+        padding: 0 1px; }
+      .graphs header .tools .btn:hover {
+        background: #cfcfcf; }
+  .graphs .content {
+    position: absolute;
+    left: 0;
+    top: 25px;
+    width: 100%;
+    height: calc(100% - 25px);
+    overflow-y: scroll; }
+  .graphs .graph {
+    border-bottom: 1px solid #c6c6c6;
+    padding-bottom: 15px; }
+    .graphs .graph .rg-bottom {
+      bottom: 20px; }
+  .graphs.close {
+    right: calc(-50% + 170px); }
+  .graphs.show {
+    right: 0; }
 
 .user_list {
   min-width: 145px;
-  height: calc(100% - 40px);
+  height: 100%;
   position: absolute;
-  top: 40px;
   float: left;
-  border-right: 1px solid gainsboro;
+  border-right: 1px solid #c6c6c6;
   background: #fff;
   overflow: hidden;
   text-align: left; }
   .user_list .wrapper > .header {
     text-align: center;
     padding: 0;
-    border-bottom: 1px solid gainsboro; }
+    border-bottom: 1px solid #c6c6c6; }
   .user_list .ui.list {
     position: absolute;
     font-size: .9em;
@@ -91,8 +162,8 @@ body {
     height: 25px;
     font-size: .8em;
     text-align: center;
-    background: #f2f2f2;
-    border-top: 1px solid gainsboro;
+    background: gainsboro;
+    border-top: 1px solid #c6c6c6;
     position: absolute;
     bottom: 0; }
     .user_list .wrapper > .footer span {
@@ -108,17 +179,20 @@ body {
   margin-left: 145px;
   padding: 10px;
   position: absolute;
-  height: calc(100% - 40px);
-  overflow-y: scroll; }
+  height: 100%;
+  overflow-y: scroll;
+  transition: all .25s; }
+  .details.full {
+    width: calc(100% - 170px); }
   .details .wrapper {
     width: 100%;
     background: #fff;
-    border: 1px solid gainsboro; }
+    border: 1px solid #c6c6c6; }
   .details header {
     width: 100%;
     padding: 10px;
-    background: #F2F9F9;
-    border-bottom: 1px solid gainsboro; }
+    background: #F1F1F1;
+    border-bottom: 1px solid #c6c6c6; }
   .details .content {
     /*padding: 10px ;*/ }
   .details table {
@@ -129,10 +203,10 @@ body {
     border-collapse: separate;
     border-spacing: 0px; }
     .details table.bordered {
-      border: 1px solid gainsboro; }
+      /*border: $border_settings;*/ }
       .details table.bordered tr td {
-        border-top: 1px solid gainsboro;
-        border-right: 1px solid gainsboro; }
+        border-top: 1px solid #c6c6c6;
+        border-right: 1px solid #c6c6c6; }
       .details table.bordered tr:first-child td {
         border-top: none; }
       .details table.bordered td:last-child {
@@ -145,5 +219,33 @@ body {
         min-width: 100px;
         vertical-align: top;
         padding: 10px; }
+
+.add_user {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transition: left .25s; }
+  .add_user header {
+    width: 100%;
+    height: 75px; }
+    .add_user header > * {
+      margin-top: 10px;
+      margin-right: 10px;
+      float: left; }
+  .add_user .wrapper {
+    width: 100%;
+    height: 100%;
+    padding: 10px 30px;
+    background: #fff;
+    position: absolute;
+    z-index: 20;
+    left: 0; }
+  .add_user .field {
+    width: 100%;
+    padding: 5px; }
+  .add_user.close {
+    left: 100%; }
+  .add_user.show {
+    left: 0; }
 
 /*# sourceMappingURL=style.css.map */

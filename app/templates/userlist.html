@@ -1,5 +1,5 @@
 <div class="wrapper">
-	<div class="header"><a href="#" class="btn ui-btn full">Додати клієнта</a></div>
+	<div class="header"><a href="#" ng-click="toggle_add_user_flag()" class="btn ui-btn full">Додати клієнта</a></div>
 	<div class="ui middle aligned selection list">
 		<div class="item" ng-class="{select: db.users.indexOf(item) === activeUser}" ng-repeat="item in db.users | limitTo:100:begin" id="{{db.users.indexOf(item)}}" ng-click="extraInfo(db.users.indexOf(item))">
 			<div class="content">
