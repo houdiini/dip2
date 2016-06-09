@@ -1,8 +1,8 @@
 var MongoClient = require('mongodb').MongoClient;
- 
-// Connection URL 
+
+// Connection URL
 var url = 'mongodb://admin:toha@ds015953.mlab.com:15953/bank_users';
-// Use connect method to connect to the Server 
+// Use connect method to connect to the Server
 
 angular.module ('BI.Mongo', [])
 
@@ -19,9 +19,14 @@ angular.module ('BI.Mongo', [])
             callback(docs);
           });
     });
-};
+  };
+  var addClient = function(client){
+    var collection = db.collection('users');
+    collection.insertMany([client], function(err, result){ console.log() });
+  }
     return {
         connect: connect,
+        addClient: addClient,
         findAll: findAllDocuments
 
     };

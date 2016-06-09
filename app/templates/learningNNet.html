@@ -1,10 +1,10 @@
 <div class="wrapper">
   <div class="header">
-      <a href="" class="btn full">Генерувати автоматично</a>
-    </div>
-    <div class="prognose" id="prognose">
-      <p>{{answer}}</p>
-    </div>
+      <a href="" ng-click="openNNet()" class="btn full">Навчити нейронну мережу на попередніх даних!</a>
+  </div>
+  <div class="prognose" id="prognose">
+    <p>{{answer}}</p>
+  </div>
     <div class="content" ng-keydown="actionKey($event)">
       <div class="field" ng-class="current.ageClass">
         <label for="age">Ім’я</label><input   ng-class="current.ageClass" type="text" id="age" value="{{current.name}}" />
@@ -33,11 +33,14 @@
       <div class="field" ng-class="current.expClass">
         <label for="exp">Стаж роботи</label><input ng-class="current.expClass" type="text" id="exp" value="{{current.exp}}" />
       </div>
-      
-      <div class="btn" id="check" ng-click="check()">Проверка</div>
-      <div class="btn" id="save" ng-click="save()">Сохранить нейросеть</div>
+      <footer class="footer">
+        <a href="" id="give" ng-click="give()" class="btn btn-green">✔︎ Дозволити</a>
+        <a href="" id="deny" ng-click="deny()" class="btn btn-red">✕ Відмовити</a>
+        <div class="btn" id="save" ng-click="save()">Зберегти нейронну мережу</div>
+      </footer>
     </div>
-  
-    <a href="" id="give" ng-click="give()" class="btn sticky right transparent">✔︎</a>
-    <a href="" id="deny" ng-click="deny()" class="btn sticky left transparent">✕</a>
+
+    <footer>
+      {{NeuralNetworkLog}}
+    </footer>
 </div>

@@ -13,7 +13,7 @@
     <!--<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">-->
   </head>
   <body ng-controller="mainCtrl">
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>  
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
   <!-- <script src="../lib/angular/angular.js"></script> -->
   <script src="../lib/angular-ui-router.js"></script>
   <script src="../lib/underscore.js"></script>
@@ -45,22 +45,25 @@
 
 
   <div class="adress_bar" ui-view="bi-adress"></div>
-  <div class="tools">
-    <label class="btn transparent" for="adduser">Додати клієнта</label>
-    <input type="checkbox" id="adduser" ng-model="add_user_flag" style="display: none" />
-    <label class="btn transparent" for="NNet">Навчання нейронної мережі</label>
-    <input type="checkbox" id="NNet" ng-model="learning_flag" style="display: none" />
-    <label class="btn transparent" for="kmeans">Метод k-means</label>
-    <input type="checkbox" id="kmeans" ng-model="kmeans_flag" style="display: none" />
-    <a href="#" class="btn transparent ">Метод name of metod</a>
-  </div>
+  <form class="tools">
+    <label class="btn transparent" ng-class="{select: tabClass(1)}" for="adduser">Додати клієнта</label>
+    <input type="radio" id="adduser" ng-model="side_window" value="1" style="display: none" />
+    <label class="btn transparent" ng-class="{select: tabClass(2)}" for="NNet">Навчання нейронної мережі</label>
+    <input type="radio" id="NNet" ng-model="side_window" value="2" style="display: none" />
+    <label class="btn transparent" ng-class="{select: tabClass(3)}" for="kmeans">Метод k-means</label>
+    <input type="radio" id="kmeans" ng-model="side_window" value="3" style="display: none" />
+    <label class="btn transparent" ng-class="{select: tabClass(4)}" for="hierarchical">Ієрархічний метод</label>
+    <input type="radio" id="hierarchical" ng-model="side_window" value="4" style="display: none" />
+  </form>
+      <div class="error" ng-class="{'no-err': !error}">{{error}}</div>
   <div class="content">
     <div class="user_list" ui-view="user-list">  </div>
     <div class="details" ng-class="{'full': !graphs_flag, 's': graphs_flag}" ui-view="info"></div>
     <div class="graphs" ng-class="{'close': !graphs_flag, 'show': graphs_flag}" ui-view="graphs"></div>
-    <div class="add_user" ng-class="{'close': !add_user_flag, 'show': add_user_flag}" ui-view="add_user"></div>
-    <div class="add_user learning" ng-class="{'close': !learning_flag, 'show': learning_flag}" ui-view="learningNNet"> </div>
-    <div class="add_user learning" ng-class="{'close': !kmeans_flag, 'show': kmeans_flag}" ui-view="kMeans"> </div>
+    <div class="side_window" ng-class="{'close': true, 'show': false}" ui-view="add_user"></div>
+    <div class="side_window learning" ng-class="{'close': !tabClass(2), 'show': tabClass(2) }" ui-view="learningNNet"> </div>
+    <div class="side_window learning" ng-class="{'close': !tabClass(3), 'show': tabClass(3)}" ui-view="kMeans"> </div>
+    <div class="side_window learning" ng-class="{'close': !tabClass(4), 'show': tabClass(4)}" ui-view="hierarchialClustering"> </div>
   </div>
 
 <div ng-include src="'templates/icons.html'"></div>

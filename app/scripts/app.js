@@ -44,6 +44,10 @@ angular.module('BI', ['ngSanitize', 'nvd3', 'angularResizable', 'ui.router', 'BI
                 'kMeans': {
                     templateUrl: 'templates/k-means.html',
                     controller: 'learningNNetCtrl'      //kMeansCtrl
+                },
+                'hierarchialClustering': {
+                    templateUrl: 'templates/hierarchialClustering.html',
+                    controller: 'learningNNetCtrl'      //kMeansCtrl
                 }
             }
         })

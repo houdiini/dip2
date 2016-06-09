@@ -6,7 +6,7 @@ $color_akcent: #F1F1F1;
 $color_text: #0B181D;
 $color_active: #DEDEED;
 $color_hover: #E1E7E1;
-$color_btn: #3384E3;
+$color_btn: #6494cc;
 $color_text_btn: #fff;
 
 $border_settings: 1px solid $color_border;
@@ -14,12 +14,35 @@ $border_settings: 1px solid $color_border;
 $padding_size: 5px;
 
 * {
-	box-sizing: border-box; 
+	box-sizing: border-box;
 }
 
 body {
 	background: $color_bg;
 	color: $color_text;
+}
+
+.error {
+	width: 100%;
+	z-index: 999999;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	flex: 1;
+	align-items:center;
+	justify-content: center;
+	color: #fff;
+	font-size: 13px;
+
+	height: 40px;
+	background: #e24343;
+	// border: $border_settings;
+	border-color: rgb(112, 11, 11);
+	transition: height 200ms;
+	&.no-err {
+		height: 0;
+	}
 }
 
 body > .content {
@@ -53,7 +76,7 @@ body > .content {
 }
 
 
-//	Buttons 
+//	Buttons
 
 .btn {
 	display: inline-block;
@@ -64,8 +87,20 @@ body > .content {
 	text-decoration: none;
 	color: $color_text_btn;
 	padding: 7px;
-	margin: auto;
+	// margin: auto;
 	background: $color_btn;
+	&.btn-green {
+		background: #6db93f;
+		&:hover {
+			background: #6db93f - #333;
+		}
+	}
+	&.btn-red {
+		background: #d53e3e;
+		&:hover {
+			background: #d53e3e - #333;
+		}
+	}
 	&:hover {
 		background: $color_btn - #222;
 	}
@@ -106,11 +141,14 @@ body >.tools {
 		min-width: 21%;
 		display: inline-block;
 		margin-right: 1%;
+		&.select {
+			background: $color_btn + #444;
+		}
 	}
 }
 
 
-//	Adress bar 
+//	Adress bar
 
 .adress_bar {
 	width: 100%;
@@ -131,7 +169,6 @@ body >.tools {
 		float: left;
 		margin: 5px 5px 5px 0;
 		border: none;
-		/*background: transparent;*/
 		font-size: .8em;
 	}
 
@@ -139,51 +176,60 @@ body >.tools {
 
 
 
-// Learning 
+// Learning
 
 .prognose {
-	padding: 5px;
-	text-align: center;
+	display: flex;
+	justify-content: center;
+	font-size: 14px;
 }
 
 
-	.field {
+.field {
+		display: flex;
+		flex-flow: row wrap;
+		flex: 1;
 		position: relative;
 		width: 100%;
 		padding: 10px;
 	&.bad {
-		&:after {
-			content: "!";
-			display: block;
-			color: #E00D0D;
-			position: absolute;
-			padding: 7px;
-			top: 0px;
-			left: 92%;
+			&:after {
+				content: "!";
+				display: flex;
+				align-items: center;
+				height: 100%;
+
+				color: #d93636;
+				position: absolute;
+				top: 0px;
+				right: 15px;
+			}
 		}
-	}
 	label {
-		display: inline-block;
+		display: inline-flex;
+		flex: 1;
 		padding: 2px;
-		width: 30%;
+		min-width: 100px;
 		margin: 0;
 	}
 	select, input {
-		display: inline-block;
-		width: 60%;
+		display: inline-flex;
+		flex: 2;
+		min-width: 200px;
 		border: 1px solid #aaa;
 		background: #fff;
+		padding: 5px;
 		&.good {
 			border: 1px solid #48B647;
 			box-shadow: 0 0 5px #48B647;
 		}
 		&.warn {
-			border: 1px solid #D2C945;
-			box-shadow: 0 0 5px #D2C945;
+			border: 1px solid #b2d245;
+			box-shadow: 0 0 5px #b2d245;
 		}
 		&.bad {
-			border: 1px solid #E00D0D;
-			box-shadow: 0 0 5px #E00D0D;
+			border: 1px solid #d93636;
+			box-shadow: 0 0 5px #d93636;
 			&:after {
 				content: "!";
 				display: block;
@@ -205,12 +251,12 @@ body >.tools {
 	top: 30px;
 	background: $color_main;
 	width: 100%;
-	height: calc(100% - 40px);	
+	height: calc(100% - 40px);
 	&.show {
 		left: 0;
 	}
 	&.close {
-		left: 100%;		
+		left: 100%;
 	}
 	.field {
 		width: 100%;
@@ -280,7 +326,7 @@ body >.tools {
 }
 
 
-// List 
+// List
 
 .user_list {
     min-width: 145px;
@@ -331,11 +377,11 @@ body >.tools {
 		.nav {
 			width: 10%;
 		}
-    } 
+    }
 }
 
 
-//	Details 
+//	Details
 
 .details {
 	width: 50%;
@@ -343,7 +389,7 @@ body >.tools {
 	padding: 10px;
 	position: absolute;
 	height: 100%;
-	overflow-y: scroll;	
+	overflow-y: scroll;
 	transition: all .25s;
 	&.full {
 		width: calc(100% - 170px);
@@ -399,31 +445,66 @@ body >.tools {
 
 // Add CLIENT
 
-.add_user {
+.side_window {
 	width: 100%;
 	height: 100%;
 	position: absolute;
+	display: flex;
+	flex-flow: column nowrap;
 	transition: left .25s;
-	header {
-		width: 100%;
-		height: 75px;
-		& > * {
-			margin-top: 10px;
-			margin-right: 10px;
-			float: left;
-		}
-	}
 	.wrapper {
+		display: flex;
+		flex-flow: column nowrap;
 		width: 100%;
 		height: 100%;
-		padding: 10px 30px;
+		padding: 0px;
 		background: $color_main;
 		position: absolute;
 		z-index: 20;
 		left: 0;
+		& > * {
+			display: flex;
+		}
+		.content {
+			flex: 1;
+			flex-flow: column nowrap;
+			align-content: center;
+			justify-content: space-around;
+			overflow-y: scroll;
+			.footer {
+				display: flex;
+				flex-flow: row;
+				margin-top: 10px;
+				align-items: stretch;
+				align-content: stretch;
+				height: 40px;
+				justify-content: center;
+				.btn {
+					display: flex;
+					flex: 1;
+					justify-content: center;
+					align-items: center;
+				}
+			}
+		}
+		& > footer {
+			display: flex;
+			align-self: flex-end;
+			align-items: center;
+
+			padding-left: 10px;
+			// margin-top: 10px;
+			height: 30px;
+			min-width: 100%;
+			border-top: $border_settings;
+			background: $color_akcent;
+			font-size: 12px;
+		}
 	}
 	.field {
 		width: 100%;
+		min-height: 30px;
+
 		padding: 5px;
 	}
 	&.close {
@@ -433,6 +514,3 @@ body >.tools {
 		left: 0;
 	}
 }
-
-
-

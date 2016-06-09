@@ -1,16 +1,16 @@
 <div class="wrapper">
 	<div class="header">
-		<span class="btn full" ng-click="doKMeans()">Згенерувати кластери з якими буде проводитись порівняння</span>
+		<span class="btn full" ng-click="doHierarchialClustering()">Згенерувати кластери з якими буде проводитись порівняння</span>
 	</div>
-	<div class="prognose" ><p>{{ message }}</p></div>
-	<div class="content">
+	<div class="prognose" ><p>{{ hierarchicalMessage }}</p></div>
+  <div class="content">
 		<div class="field">
 			<label for="name">Ім’я</label>
 			<input type="text" placeholder="Ім’я" id="name" />
 		</div>
 		<div class="field">
 			<label for="live">Проживання</label>
-			<select ng-change="showNewUser()" name="" ng-model="newClient.live" id="live">
+			<select ng-change="calcHierchial()" name="" ng-model="newClient.live" id="live">
 				<option ng-selected="newClient.live === 1" value="1" >аренда</option>
 				<option ng-selected="newClient.live === 0.5" value="0.5">муніципальне житло</option>
 				<option ng-selected="newClient.live === 0" value="0">власне житло</option>
@@ -18,7 +18,7 @@
 		</div>
 		<div class="field">
 			<label for="relationship">Сімейний стан</label>
-			<select ng-change="showNewUser()" name="" ng-model="newClient.relationship" id="relationship">
+			<select ng-change="calcHierchial()" name="" ng-model="newClient.relationship" id="relationship">
 				<option ng-selected="newClient.relationship === 0" value="0">одружений(-на)</option>
 				<option ng-selected="newClient.relationship === 0.5" value="0.5">не одружений(-на)</option>
 				<option ng-selected="newClient.relationship === 1" value="1">розведений(-на)</option>
@@ -26,7 +26,7 @@
 	</div>
 		<div class="field">
 			<label for="education">Освіта</label>
-			<select ng-change="showNewUser()" name="" ng-model="newClient.education" id="education">
+			<select ng-change="calcHierchial()" name="" ng-model="newClient.education" id="education">
 				<option ng-selected="newClient.education === 0" value="0">вищa</option>
 				<option ng-selected="newClient.education === 0.5" value=".5">молодший спеціаліст</option>
 				<option ng-selected="newClient.education === 1" value="1">середнє</option>
@@ -34,15 +34,15 @@
 		</div>
 		<div class="field">
 			<label for="creditHistory">Кредитна історія</label>
-			<select ng-change="showNewUser()" name="" ng-model="newClient.creditHistory" id="creditHistory">
+			<select ng-change="calcHierchial()" name="" ng-model="newClient.creditHistory" id="creditHistory">
 				<option ng-selected="newClient.creditHistory === 0" value="0">позитивна</option>
-				<option ng-selected="newClient.creditHistory === .4" value=".4">немає даних</option>
+				<option ng-selected="newClient.creditHistory === .5" value=".5">немає даних</option>
 				<option ng-selected="newClient.creditHistory === 1.3" value="1.3">негативна</option>
 			</select>
 		</div>
 		<div class="field">
 			<label for="post">Посада</label>
-			<select ng-change="showNewUser()" name="" ng-model="newClient.post" id="post">
+			<select ng-change="calcHierchial()" name="" ng-model="newClient.post" id="post">
 				<option ng-selected="newClient.post === 0" value="0">займає керівну посаду</option>
 				<option ng-selected="newClient.post === 0.4" value="0.4">рядовий співробітник</option>
 				<option ng-selected="newClient.post === 1.2" value="1.2">безробітний</option>
@@ -50,7 +50,7 @@
 		</div>
 		<div class="field">
 			<label for="residence">Термін проживання</label>
-			<select ng-change="showNewUser()" name="" ng-model="newClient.residence" id="residence">
+			<select ng-change="calcHierchial()" name="" ng-model="newClient.residence" id="residence">
 				<option ng-selected="newClient.residence === 0" value="0">> 5 років</option>
 				<option ng-selected="newClient.residence === 0.3" value="0.3">1-5 років</option>
 				<option ng-selected="newClient.residence === 1" value="1">менше року</option>
@@ -58,7 +58,7 @@
 		</div>
 		<div class="field">
 			<label for="exp">Стаж роботи</label>
-			<select ng-change="showNewUser()" name="" ng-model="newClient.exp" id="exp">
+			<select ng-change="calcHierchial()" name="" ng-model="newClient.exp" id="exp">
 				<option ng-selected="newClient.exp === 0" value="0">> 3 років</option>
 				<option ng-selected="newClient.exp === 0.3" value="0.3">1-3 років</option>
 				<option ng-selected="newClient.exp === 1.3" value="1.3">менше року</option>
@@ -66,7 +66,7 @@
 			</select>
 		</div>
 		<div class="footer">
-			<span class="btn" ng-click="showNewUser()">Провести перевірку</span>
+			<span class="btn" ng-click="calcHierchial()">Провести перевірку</span>
 		</div>
 	</div>
 </div>

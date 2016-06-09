@@ -2,6 +2,7 @@ var fs = require('fs');
 var brain = require('brain');
 var randomName = require('random-name');
 var kmeans = require('machine_learning');
+var cluster = require('hierarchical-clustering');
 
 
 angular.module('BI.controllers', [])
@@ -14,8 +15,13 @@ angular.module('BI.controllers', [])
         $rootScope.db = {
             url: 'mongodb://admin:toha@ds015953.mlab.com:15953/bank_users',
             users: []
-        }; 
+        };
         $rootScope.add_user_flag = 0;
+
+
+				$scope.tabClass = function(v){
+					return $scope.side_window == v;
+				}
 
 
 
@@ -73,7 +79,7 @@ angular.module('BI.controllers', [])
             num.income = Math.round(num.income /500)*500;
             return num
         });
-        
+
         var labels = _.sortBy(_.union(_.pluck(workArray, $scope.add.param.x)));
         var byLabels = _.groupBy( workArray, $scope.add.param.x );
 
@@ -95,12 +101,12 @@ angular.module('BI.controllers', [])
                         return d3.format(',.4f')(d[0]);
                     },
                     transitionDuration: 300
-                }   
+                }
             };
         for ( var i = 0, l = labels.length; i < l; i++) {
             var d = [labels[i]];
             if ($scope.add.param.y === 'count_true') {
-                var a = _.reduce(byLabels[''+ labels[i]], function(m, n) {var s = !n.credits.overdue ? 1: 0; return m+s}, 0);                
+                var a = _.reduce(byLabels[''+ labels[i]], function(m, n) {var s = !n.credits.overdue ? 1: 0; return m+s}, 0);
             } else if ($scope.add.param.y === 'count_false') {
                 var a = _.reduce(byLabels[''+ labels[i]], function(m, n) {var s = n.credits.overdue ? 1: 0; return m+s}, 0);
             } else {
@@ -115,7 +121,6 @@ angular.module('BI.controllers', [])
     });
 
     $scope.remove_graph = function(id) {
-        console.log(id);
         var i = $scope.graphs.indexOf(id);
         var newArr = _.union($scope.graphs.slice(0, i), $scope.graphs.slice(i+1));
         $scope.graphs = newArr;
@@ -182,19 +187,18 @@ angular.module('BI.controllers', [])
         learningRate: .2
     });
 
-    $timeout(generateNewData, 500);
+    $timeout(function(){generateNewData(), openTrainerSet()}, 500);
 
     var trainerSet = [];
     $scope.current = {};
 
-    function open () {
-        
+    function openNNet () {
         try {
             var json = fs.readFileSync('KnowlegeIsPower.yes');
-            trainerSet = JSON.parse(fs.readFileSync('trainerSet.yes'));
             json = JSON.parse(json);
             net.fromJSON(json);
-            var res = net.run(simple($scope.current)); 
+						$scope.NeuralNetworkLog = 'Нейронна мережа відновленна з файлу!';
+            var res = net.run(simple($scope.current));
             $scope.answer = 'Мені лячно помилитись, допоможіть з відповіддю!';
             if (res > .7) {
                 $scope.answer = 'Дать! Оценка: ' + Math.round(res * 100) / 100;
@@ -205,36 +209,44 @@ angular.module('BI.controllers', [])
         catch (e) { console.warn(e) };
     }
 
-    open();
+		function openTrainerSet() {
+			trainerSet = JSON.parse(fs.readFileSync('trainerSet.yes'));
+		};
+
+		// $scope.openNNet = function(){open()};
+		openNNet();
+		console.log(trainerSet);
+		$scope.NeuralNetworkLog = 'Не навчена!';
 
     $scope.save = function() {
         net.train(trainerSet, {
-            errorThresh: 0.0005,  // error threshold to reach 
-            iterations: 20000,   // maximum training iterations 
-            log: true,           // console.log() progress periodically 
-            logPeriod: 100,       // number of iterations between logging 
-            learningRate: 0.3    // learning rate 
+            errorThresh: 0.0005,  // error threshold to reach
+            iterations: 20000,   // maximum training iterations
+            log: true,           // console.log() progress periodically
+            logPeriod: 100,       // number of iterations between logging
+            learningRate: 0.3    // learning rate
         });
         console.log( net.toJSON() );
         fs.writeFileSync( 'KnowlegeIsPower.yes', JSON.stringify( net.toJSON() ) );
         fs.writeFileSync( 'trainerSet.yes', JSON.stringify( trainerSet ) );
-        console.log('writen');
     };
 
     $scope.give = function(){
         pushNewData(1);
+				$scope.NeuralNetworkLog = 'Навчання нейронної мережі';
         generateNewData();
+
     }
 
     $scope.deny = function(){
         pushNewData(0);
-        generateNewData();
+        $timeout(generateNewData());
     }
 
     function pushNewData(good) {
         $scope.current.good = good;
         $rootScope.db.users.push = $scope.current;
-        
+				$scope.NeuralNetworkLog = 'Навчання нейронної мережі';
         trainerSet.push({
             input: simple($scope.current),
             output: [$scope.current.good]
@@ -249,6 +261,16 @@ angular.module('BI.controllers', [])
     function random(n) {
         return Math.round(Math.random()*n);
     }
+
+		$rootScope.newClient = {
+				 post: 1,
+				 education: 1,
+				 exp: 1.3,
+				 residence: 1.1,
+				 relationship: 1,
+				 live: 1,
+				 creditHistory: 1
+		 }
 
     function generateNewData(){
         var live = ['аренда', 'муніципальне житло', 'власне житло'];
@@ -272,37 +294,31 @@ angular.module('BI.controllers', [])
             exp: exp[random(2)],
             procent: random(40)
         }
-
-       $rootScope.newClient = {
-            post: 1,
-            education: 1,
-            exp: 1,
-            residence: 1,
-            relationship: 1,
-            live: 1,
-            creditHistory: 1
-        }
-
         try {
+						$scope.calculation = true;
             net.train(trainerSet, {
-                errorThresh: 0.0005,  // error threshold to reach 
-                iterations: 20000,   // maximum training iterations 
-                log: true,           // console.log() progress periodically 
-                logPeriod: 5000,       // number of iterations between logging 
-                learningRate: 0.3    // learning rate 
+                errorThresh: 0.01,  // error threshold to reach
+                iterations: 20000,   // maximum training iterations
+                log: true,           // console.log() progress periodically
+                logPeriod: 5000,       // number of iterations between logging
+                learningRate: 0.1    // learning rate
             });
+						$scope.calculation = false;
+						$scope.NeuralNetworkLog = 'Нейронна мережа навчена!';
             var res = net.run(simple($scope.current));
-            console.log(res);
+
             $scope.answer = 'Мені лячно помилитись, допоможіть з відповіддю!';
             if (res > .7) {
-                $scope.answer = 'Дать! Оценка: ' + Math.round(res * 100) / 100;
+                $scope.answer = 'Дать! Оценка: ' + Math.round(res * 1000) / 1000;
             } else if (res < .4) {
                 $scope.answer = 'Не дать';
             }
         }
         catch (e) {
+						console.warn(e);
             try {
                 var res = net.run(simple($scope.current));
+								$scope.NeuralNetworkLog = 'Нейронна мережа відновлена з файлу!'
             }
             catch (e) { console.warn(e) }
         }
@@ -404,7 +420,6 @@ angular.module('BI.controllers', [])
 
 
     $scope.actionKey = function(e){
-        console.log(e);
         if (e.keyCode === 39) {
             pushNewData(1);
             generateNewData();
@@ -419,6 +434,29 @@ angular.module('BI.controllers', [])
 
 
     //tak eto ne doljno bit'
+
+		function means(data, clusters, k) {
+			means = [];
+			console.log(clusters);
+														console.log(data);
+			for(i=0 ; i<k ; i++) {
+					var avgs = [];
+					for(j=0 ; j<data[0].length ; j++)
+							avgs.push(0.0);
+					if(clusters[i].length > 0) {
+							for(j=0 ; j<clusters[i].length ; j++) {
+									for(l=0 ; l<data[0].length ; l++) {
+											avgs[l] += data[clusters[i][j]][l];
+									}
+							}
+							for(j=0 ; j<data[0].length ; j++) {
+									avgs[j] /= clusters[i].length;
+							}
+							means[i] = avgs;
+					}
+			}
+			return means;
+		}
 
     function distance(a, b) {
       if (a.length !== b.length) {
@@ -435,32 +473,119 @@ angular.module('BI.controllers', [])
     $rootScope.message = 'Введіть дані';
 
     $scope.showNewUser = function(){
-        var victor = [$scope.newClient.live,
-            $scope.newClient.relationship,
-            $scope.newClient.education,
-            $scope.newClient.creditHistory, 
-            $scope.newClient.post, 
-            $scope.newClient.residence,
-            $scope.newClient.exp, 0, 1
+        var victor = [$scope.newClient.live*1,
+            $scope.newClient.relationship*1,
+            $scope.newClient.education*1,
+            $scope.newClient.creditHistory*1,
+            $scope.newClient.post*1,
+            $scope.newClient.residence*1,
+            $scope.newClient.exp*1, 0
+        ];
+				console.log(victor);
+				var NNetMessage = net.run(victor);
+				victor.push(1);
+        try {
+						var indexOfOverdue = _.last(result.means[0]) === 1 ? 0 : 1;
+						var indexOfNoOverdue = _.last(result.means[1]) === 0 ? 1 : 0;
+            var a = distance(victor, result.means[indexOfOverdue]);
+            victor[victor.length - 1] = 0;
+            var b = distance(victor, result.means[indexOfNoOverdue]);
+            var locResult = a - b;
+						console.log('Give:\n%o\nDeny:\n%o', a, b)
+            locResult = locResult > 0 ? false : true;
+						console.log(NNetMessage);
+						$scope.message = 'Результат методу - ';
+            $scope.message += locResult ? 'Видати. ' : "Відмовити у видачі!";
+						var NNetMess = 'Мені лячно помилитись, допоможіть з відповіддю!';
+            if (NNetMessage > .7) {
+                $scope.message += ' Результат нейронної мережі - видати! Оцінка: ' + Math.round(NNetMessage * 10000) / 10000;
+            } else if (NNetMessage < .4) {
+                $scope.message += ' Результат нейронної мережі - відхилити. Оцінка ' + Math.round(NNetMessage * 10000) / 10000;
+            }
+
+
+        }
+        catch (err) {
+					$rootScope.error = 'ERROR: Кластери не згенеровані! Спочатку згенеруйте кластери, щоб було з чим порівнювати!';
+					$timeout(function(){
+						$rootScope.error = '';
+					}, 3000);
+					console.warn(err)
+				 }
+    }
+
+    $scope.doKMeans = function(){
+			console.log('doKMENS');
+        var vector = new Array();
+        for (var i = 1, l = trainerSet.length; i < l; i++) {
+            vector[i-1] = _.clone(trainerSet[i].input);
+            vector[i-1].push(trainerSet[i].output[0]);
+        }
+
+        result = kmeans.kmeans.cluster({
+            data : vector,
+            k : 2,
+            epochs: 100,
+            distance : {type : "pearson"}
+        });
+    }
+
+		function linkage(distances) {
+		  return Math.min.apply(null, distances);
+		}
+
+		$scope.doHierarchialClustering = function(){
+			var vector = new Array();
+			for (var i = 1, l = trainerSet.length; i < l; i++) {
+					vector[i-1] = _.clone(trainerSet[i].input);
+					vector[i-1].push(trainerSet[i].output[0]);
+			};
+
+			var levels = cluster({
+			  input: vector,
+			  distance: distance,
+			  linkage: linkage,
+			  minClusters: 2
+			});
+
+			var clusters = _.last(levels);
+			clusters.means = means(vector, clusters.clusters, 2);
+			hierarchialResult = clusters;
+		}
+
+		var hierarchialResult;
+
+		$scope.calcHierchial = function(){
+        var victor = [$scope.newClient.live*1,
+            $scope.newClient.relationship*1,
+            $scope.newClient.education*1,
+            $scope.newClient.creditHistory*1,
+            $scope.newClient.post*1,
+            $scope.newClient.residence*1,
+            $scope.newClient.exp*1, 0, 1
         ];
         try {
-            console.log(result);
-            var a = distance(victor, result.means[1]);
+					console.log(victor);
+					console.log(hierarchialResult.means);
+						var indexOfOverdue = _.last(hierarchialResult.means[0]) === 1 ? 0 : 1;
+						var indexOfNoOverdue = _.last(hierarchialResult.means[1]) === 0 ? 1 : 0;
+            var a = distance(victor, hierarchialResult.means[indexOfOverdue]);
             victor[victor.length - 1] = 0;
-            var b = distance(victor, result.means[0]);
-            console.log(a);
-            console.log(b);
+            var b = distance(victor, hierarchialResult.means[indexOfNoOverdue]);
             var locResult = a - b;
-            console.log(_.last(result.means[1]));
-            if ( _.last(result.means[1]) === 0 ) {
-                locResult = locResult > 0 ? false : true;
-            } else locResult = locResult > 0 ? true : false;
-            console.log(locResult);
+						console.log('Give:\n%o\nDeny:\n%o', a, b);
+						console.log(locResult);
+            locResult = locResult > 0 ? false : true;
 
-            $rootScope.message = locResult ? 'Видати' : "Відмовити у видачі!"; 
-            console.log($rootScope.message);
+            $scope.hierarchicalMessage = locResult ? 'Видати' : "Відмовити у видачі!";
         }
-        catch (err) { console.warn(err) }
+        catch (err) {
+					$rootScope.error = 'ERROR: Кластери для цього типу не згенеровані! Спочатку згенеруйте кластери, щоб було з чим порівнювати!';
+					$timeout(function(){
+						$rootScope.error = '';
+					}, 3000);
+					console.warn(err)
+				 }
     }
 
     $scope.doKMeans = function(){
@@ -473,80 +598,14 @@ angular.module('BI.controllers', [])
         result = kmeans.kmeans.cluster({
             data : vector,
             k : 2,
-            epochs: 100, 
+            epochs: 100,
             distance : {type : "pearson"}
         });
-
-        console.log(result);
-
-        // console.log(kmeans.clusterize(vector, {k: 2}, (err, res) => {
-        //     console.log(err);
-        //     console.log(res);
-        // }))
     }
 
-
-})
+}) /// prev coontroller
 
 
 .controller('kMeansCtrl', function($scope, $rootScope){
     // kmeans()
 });
-
-
-
-
-
-
-
-// 'use strict';
-
-// const electron = require('electron');
-// const app = electron.app;
-// const BrowserWindow = electron.BrowserWindow;
-// const ipc = electron.ipcMain ;
-
-// let mainWindow = null, openFileWindow = null;
-
-// function createWindow () {
-//   mainWindow = new BrowserWindow({width: 800, height: 600});
-//   mainWindow.loadURL('file://' + __dirname + '/app/index.html');
-
-//   // Open the DevTools.
-//   // mainWindow.webContents.openDevTools();
-//   mainWindow.on('closed', function() {
-
-//     mainWindow = null;
-//   });
-// }
-
-// app.on('ready', createWindow);
-
-// app.on('window-all-closed', function () {
-
-//   if (process.platform !== 'darwin') {
-//     app.quit();
-//   }
-// });
-
-// ipc.on('file-opened', function(res){
-//   console.log('File opened');
-//   console.log(res);
-// });
-
-// ipc.on('open-file-window', function(){
-//   console.log('ipc weeeee');
-//   if (!openFileWindow) {
-//     openFileWindow = new BrowserWindow({width: 300, height: 600});
-//     openFileWindow.loadURL('file://' + __dirname + '/app/templates/openDialog.html');
-//     openFileWindow.on('closed', function(){
-//       openFileWindow = null;
-//     });
-//   }
-// });
-
-// app.on('activate', function () {
-//   if (mainWindow === null) {
-//     createWindow();
-//   }
-// });
