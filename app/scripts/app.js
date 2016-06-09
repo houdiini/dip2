@@ -36,6 +36,14 @@ angular.module('BI', ['ngSanitize', 'nvd3', 'angularResizable', 'ui.router', 'BI
                 'add_user': {
                     templateUrl: 'templates/add_user.html',
                     controller: 'usersCtrl'
+                },
+                'learningNNet': {
+                    templateUrl: 'templates/learningNNet.html',
+                    controller: 'learningNNetCtrl'
+                },
+                'kMeans': {
+                    templateUrl: 'templates/k-means.html',
+                    controller: 'learningNNetCtrl'      //kMeansCtrl
                 }
             }
         })

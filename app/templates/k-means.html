@@ -1,0 +1,70 @@
+<div class="wrapper">
+	<span class="btn full" ng-click="doKMeans()">Згенерувати кластери з якими буде проводитись порівняння</span>
+	<div class="info prognose" >{{ message }}</div>
+	<div class="field">
+		<label for="name">Ім’я</label>
+		<input type="text" placeholder="Ім’я" id="name" />
+	</div>
+	<div class="field">
+		<label for="live">Проживання</label>
+		<select name="" ng-model="newClient.live" id="live">
+			<option value="0" selected>аренда</option>
+			<option value="0.5">муніципальне житло</option>
+			<option value="1">власне житло</option>
+		</select>
+	</div>
+	<div class="field">
+		<label for="relationship">Сімейний стан</label>
+		<select name="" ng-model="newClient.relationship" selected="1" id="relationship">
+			<option value="1">одружений(-на)</option>
+			<option value="0.5">не одружений(-на)</option>
+			<option value="0">розведений(-на)</option>
+	</select>
+</div>
+	<div class="field">
+		<label for="education">Освіта</label>
+		<select name="" ng-model="newClient.education" id="education">
+			<option value="1">вищa</option>
+			<option value=".5">молодший спеціаліст</option>
+			<option value="0">середнє</option>
+		</select>
+	</div>
+	<div class="field">
+		<label for="creditHistory">Кредитна історія</label>
+		<select name="" ng-model="newClient.creditHistory" id="creditHistory">
+			<option value="1">позитивна</option>
+			<option value=".4">немає даних</option>
+			<option value="0">негативна</option>
+		</select>
+	</div>
+	<div class="field">
+		<label for="post">Посада</label>
+		<select name="" ng-model="newClient.post" id="post">
+			<option value="1">займає керівну посаду</option>
+			<option value="0.5">рядовий співробітник</option>
+			<option value="-0.5">безробітний</option>
+		</select>
+	</div>
+	<div class="field">
+		<label for="residence">Термін проживання</label>
+		<select name="" ng-model="newClient.residence" id=residence">
+			<option value="0">> 5 років</option>
+			<option value=".5">1-5 років</option>
+			<option value="1.1">менше року</option>
+		</select>
+	</div>
+	<div class="field">
+		<label for="exp">Стаж роботи</label>
+		<select name="" ng-model="newClient.exp" id="exp">
+			<option value="0">> 3 років</option>
+			<option value=".5">1-3 років</option>
+			<option value="1.1">менше року</option>
+		<!-- tak treba prodaction -->
+		</select>
+	</div>
+
+	<div class="prognose">
+		<span class="btn" ng-click="showNewUser()">Провести перевірку</span>
+	</div>
+
+</div>

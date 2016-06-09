@@ -1,0 +1,43 @@
+<div class="wrapper">
+  <div class="header">
+      <a href="" class="btn full">Генерувати автоматично</a>
+    </div>
+    <div class="prognose" id="prognose">
+      <p>{{answer}}</p>
+    </div>
+    <div class="content" ng-keydown="actionKey($event)">
+      <div class="field" ng-class="current.ageClass">
+        <label for="age">Ім’я</label><input   ng-class="current.ageClass" type="text" id="age" value="{{current.name}}" />
+      </div>
+      <div class="field" ng-class="current.ageClass">
+        <label for="age">Вік</label><input   ng-class="current.ageClass" type="text" id="age" value="{{current.age}}" />
+      </div>
+      <div class="field" ng-class="current.liveClass">
+        <label for="live">Проживання</label><input ng-class="current.liveClass" type="text" id="live" value="{{current.live}}" />
+      </div>
+      <div class="field" ng-class="current.relationshipClass">
+        <label for="relationship">Сімейний стан</label><input ng-class="current.relationshipClass" type="text" id="relationship" value="{{current.relationship}}" />
+      </div>
+      <div class="field" ng-class="current.educationClass">
+        <label for="education">Освіта</label><input ng-class="current.educationClass" type="text" id="education" value="{{current.education}}" />
+      </div>
+      <div class="field" ng-class="current.creditHistoryClass">
+        <label for="creditHistory">Кредитна історія</label><input ng-class="current.creditHistoryClass" type="text" id="creditHistory" value="{{current.creditHistory}}" />
+      </div>
+      <div class="field" ng-class="current.postClass">
+        <label for="post">Посада</label><input ng-class="current.postClass" type="text" id="post" value="{{current.post}}" />
+      </div>
+      <div class="field" ng-class="current.residenceClass">
+        <label for="residence">Термін проживання</label><input ng-class="current.residenceClass" type="text" id="residence" value="{{current.residence}}" />
+      </div>
+      <div class="field" ng-class="current.expClass">
+        <label for="exp">Стаж роботи</label><input ng-class="current.expClass" type="text" id="exp" value="{{current.exp}}" />
+      </div>
+      
+      <div class="btn" id="check" ng-click="check()">Проверка</div>
+      <div class="btn" id="save" ng-click="save()">Сохранить нейросеть</div>
+    </div>
+  
+    <a href="" id="give" ng-click="give()" class="btn sticky right transparent">✔︎</a>
+    <a href="" id="deny" ng-click="deny()" class="btn sticky left transparent">✕</a>
+</div>
