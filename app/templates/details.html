@@ -1,54 +1,51 @@
-<div class="wrapper" ng-if="activeUser">
+<div class="mes-info" ng-if="activeUser === undefined">
+	<svg class="icon icon-undo2"><use xlink:href="#icon-undo2"></use></svg>
+	<span class="message">Оберіть клієнта з бази даних!</span>
+</div>
+<div class="wrapper" ng-if="activeUser !== undefined">
+
 	<header>Детальна інформація</header>
 	<div class="content">
 	<table>
 		<tbody>
 			<tr>
-				<td>{{db.users[activeUser].fName}}
-					<span>{{ db.users[activeUser].sName }}</span>
-				</td>
+				<td>{{db.users[activeUser].name}}</td>
 			</tr>
 			<tr>
-				<td>Сума</td>
+				<td>Проживання</td>
 				<td>
-					<span>{{ sum(activeUser) | number}} ₴</span>
+					<span>{{ db.users[activeUser].live }}</span>
 				</td>
 			</tr>
 			<tr>
-				<td>Прибуток</td>
-				<td><span>{{ db.users[activeUser].income | number }} ₴</span></td>
+				<td>Сімейний стан</td>
+				<td><span>{{ db.users[activeUser].relationship }}</span></td>
 			</tr>
 			<tr>
+				<td>Освіта</td>
+				<td><span>{{ db.users[activeUser].education }}</span></td>
+			</tr>
+			<tr>
+				<td>Кредитна історія</td>
+				<td><span>{{ db.users[activeUser].creditHistory }}</span></td>
+			</tr>
+			<tr>
+				<td>Термін проживання</td>
+				<td><span>{{ db.users[activeUser].residence }}</span></td>
+			</tr>
+			<tr>
+				<td>Посада</td>
+				<td><span>{{ db.users[activeUser].post }}</span></td>
+			</tr>
+			<tr>
+				<td>Стаж роботи</td>
+				<td><span>{{ db.users[activeUser].exp }}</span></td>
+			</tr>
+			<tr>
+				<td>Дата додавання до бази</td>
+				<td><span>{{ db.users[activeUser].date | date:'dd-MM-yyyy' }}</span></td>
+			</tr>
 		</tbody>
 	</table>
-
-		<span class="separator">Кредит</span>
-		<table class="bordered">
-			<tr>
-				<td>Початок</td>
-				<td>{{  getDate(db.users[activeUser].credits.start) }}</td>
-			</tr>
-			<tr>
-				<td>Термін закінчиння</td>
-				<td>{{ getDate(db.users[activeUser].credits.finish) }}</td>
-			</tr>
-			<tr>
-				<td>Сума кредиту</td>
-				<td>{{ db.users[activeUser].credits.amount | number:0}} ₴</td>
-			</tr>
-			<tr>
-				<td> Виплачний</td>
-				<td>{{ db.users[activeUser].credits.overdue ? 'Не виплачений!' : 'Виплачний!' }}</td>
-			</tr>
-		</table>
-		<span class="separator">Історія платежів</span>
-		<table class="bordered">
-			<tr ng-repeat="pay in db.users[activeUser].credits.history track by $index">
-				<td>
-					{{pay | number:2}} ₴
-				</td>
-			</tr>			
-		</table>
-		
 	</div>
 </div>

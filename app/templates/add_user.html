@@ -1,32 +1,77 @@
 <div class="wrapper">
-	<header>
-		<h2>Додавання нового клієнта</h2>
-		<a href="#" class="btn" ng-click="toggle_add_user_flag()">Відміна</a>
+	<header class="header">
+		<span>Додавання нового клієнта</span>
+		<a href="#" class="btn " ng-click="toggle_add_user_flag()"> Відміна </a>
 	</header>
-	<div class="content">
-		<div class="field">
-			<label for="">Ім'я</label>
-			<input type="text" placeholder="Ім'я" />
+	  <div class="content">
+
+			<div class="field">
+				<label>Ім’я</label>
+				<input type="text" placeholder="Ім’я" ng-model="newClient.name" />
+			</div>
+			<div class="field">
+				<label>Проживання</label>
+				<select ng-change="calcHierchial()" name="" ng-model="newClient.live">
+					<option value="1" >аренда</option>
+					<option value="0.5">муніципальне житло</option>
+					<option value="0">власне житло</option>
+				</select>
+			</div>
+			<div class="field">
+				<label>Сімейний стан</label>
+				<select ng-change="calcHierchial()" name="" ng-model="newClient.relationship">
+					<option value="0">одружений(-на)</option>
+					<option value="0.5">не одружений(-на)</option>
+					<option value="1">розведений(-на)</option>
+			</select>
 		</div>
-		<div class="field">
-			<label for="">Прізвище</label>
-			<input type="text" placeholder="Прізвище" />
+			<div class="field">
+				<label>Освіта</label>
+				<select ng-change="calcHierchial()" name="" ng-model="newClient.education">
+					<option value="0">вищa</option>
+					<option value=".5">молодший спеціаліст</option>
+					<option value="1">середнє</option>
+				</select>
+			</div>
+			<div class="field">
+				<label>Кредитна історія</label>
+				<select ng-change="calcHierchial()" name="" ng-model="newClient.creditHistory">
+					<option value="0">позитивна</option>
+					<option ng-selected="newClient.creditHistory === .5" value=".5">немає даних</option>
+					<option value="1">негативна</option>
+				</select>
+			</div>
+			<div class="field">
+				<label>Посада</label>
+				<select ng-change="calcHierchial()" name="" ng-model="newClient.post">
+					<option >займає керівну посаду</option>
+					<option value="0.5">рядовий співробітник</option>
+					<option value="1">безробітний</option>
+				</select>
+			</div>
+			<div class="field">
+				<label>Термін проживання</label>
+				<select ng-change="calcHierchial()" name="" ng-model="newClient.residence">
+					<option value="0">> 5 років</option>
+					<option value="0.5">1-5 років</option>
+					<option >менше року</option>
+				</select>
+			</div>
+			<div class="field">
+				<label>Стаж роботи</label>
+				<select ng-change="calcHierchial()" name="" ng-model="newClient.exp">
+					<option value="0">> 3 років</option>
+					<option value="0.5">1-3 років</option>
+					<option value="1">менше року</option>
+				<!-- tak treba prodaction -->
+				</select>
+			</div>
+			<div class="field">
+				<label>Дата внесення клієнта в базу даних</label>
+				<input type="date" ng-model="newClient.date">
+			</div>
 		</div>
-		<div class="field">
-			<label for="">Вік</label>
-			<input type="text" placeholder="Вік" />
+		<div class="footer">
+			<span class="btn yellow" ng-click="addClientToDB()">Додати клієнта</span>
 		</div>
-		<div class="field">
-			<label for="">Початок кредиту</label>
-			<input type="date" placeholder="Ім'я" />
-		</div>
-		<div class="field">
-			<label for="">Закінчення кредиту</label>
-			<input type="date" placeholder="Ім'я" />
-		</div>
-		<div class="field">
-			<label for="">Сумма кредиту</label>
-			<input type="numeric" placeholder="10000" />
-		</div>
-	</div>
 </div>

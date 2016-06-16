@@ -1,15 +1,23 @@
 <div class="wrapper">
-	<div class="header"><a href="#" ng-click="toggle_add_user_flag()" class="btn ui-btn full">Додати клієнта</a></div>
+	<div class="header">
+		<label class="btn ui-btn full" ng-click="addClientFlag()">Додати клієнта</label>
+	</div>
 	<div class="ui middle aligned selection list">
-		<div class="item" ng-class="{select: db.users.indexOf(item) === activeUser}" ng-repeat="item in db.users | limitTo:100:begin" id="{{db.users.indexOf(item)}}" ng-click="extraInfo(db.users.indexOf(item))">
+		<div class="item" ng-class="{select: db.users.indexOf(item) === activeUser}" ng-repeat="item in db.users | orderBy:'name' | startWith:begin-1 |limitTo:100" id="{{db.users.indexOf(item)}}" ng-click="extraInfo(db.users.indexOf(item))">
 			<div class="content">
-				<div class="header">{{item.fName}} {{item.sName}}</div>
+				<div class="header">{{item.name}}
+					<div class="btn transparent sticky right" ng-click="showOptions( db.users.indexOf(item) )"><svg class="icon icon-more_vert"><use xlink:href="#icon-more_vert"></use></svg></div>
+				</div>
+				<div class="editMenu" ng-class="{show: db.users.indexOf(item) === showOptionsFlag, close: db.users.indexOf(item) !== showOptionsFlag}" >
+					<div class="btn transparent color_blue" ng-click="showEdit(db.users.indexOf(item))"><span><svg class="icon icon-mode_edit"><use xlink:href="#icon-mode_edit"></use></svg></span> Редагувати</div>
+					<div class="btn transparent color_red" ng-click="removeClientFromDB(db.users.indexOf(item))"><span><svg class="icon icon-delete_forever"><use xlink:href="#icon-delete_forever"></use></svg></span> Видалити</div>
+				</div>
 			</div>
 		</div>
 	</div>
 	<div class="footer">
 		<span class="nav" ng-click="nav('prev')"><svg class="icon icon-skip_previous"><use xlink:href="#icon-skip_previous"></use></svg></span>
-		<span>{{begin}}-{{begin+1*100}}/{{db.users.length}}</span>
+		<span>{{begin}}-{{begin+1*100 > db.users.length ? db.users.length : begin+1*100 }}/{{db.users.length}}</span>
 		<span class="nav" ng-click="nav('next')"><svg class="icon icon-skip_previous"><use xlink:href="#icon-skip_next"></use></svg></span>
 	</div>
 

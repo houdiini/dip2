@@ -5,38 +5,21 @@
     <title>BI for banking</title>
     <link rel="stylesheet" href="./style/style.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.css">
-  <link rel="stylesheet" href="../bower_components/angular-chart.js/dist/angular-chart.css">
-  <link rel="stylesheet" href="../bower_components/nvd3/build/nv.d3.min.css">
-  <link rel="stylesheet" href="../bower_components/angular-resizable/angular-resizable.min.css">
-    <!-- <link rel="stylesheet" href="../lib/angular-foundation-gh-pages/css/foundation.min.css"> -->
-    <!-- <link rel="stylesheet" href="../lib/semantic.css"> -->
-    <!--<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">-->
+    <link rel="stylesheet" href="./bower_components/angular-chart.js/dist/angular-chart.css">
   </head>
   <body ng-controller="mainCtrl">
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
-  <!-- <script src="../lib/angular/angular.js"></script> -->
+
+  <script src="./bower_components/angular/angular.js"></script>
+  <script src="./bower_components/angular/sanitize.js"></script>
   <script src="../lib/angular-ui-router.js"></script>
   <script src="../lib/underscore.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-sanitize.min.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-nvd3/1.0.5/angular-nvd3.min.js"></script>
-
-  <script src="../bower_components/ngDraggable/ngDraggable.js"></script>
-  <script src="../bower_components/angular-resizable/angular-resizable.min.js"></script>
-<!--   <script src="../bower_components/d3/d3.min.js"></script>
-  <script src="../bower_components/nvd3/build/nv.d3.js"></script>
-  <script src="../bower_components/angular-nvd3/dist/angular-nvd3.js"></script> -->
-
-  <!--<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>-->
 
 
+  <script src="./bower_components/ngDraggable/ngDraggable.js"></script>
+  <script src="./bower_components/angular-resizable/angular-resizable.min.js"></script>
+
+
+  <!-- my modules -->
   <script src="./scripts/app.js"></script>
   <script src="./scripts/services.js"></script>
   <script src="./scripts/database_service.js"></script>
@@ -46,7 +29,7 @@
 
   <div class="adress_bar" ui-view="bi-adress"></div>
   <form class="tools">
-    <label class="btn transparent" ng-class="{select: tabClass(1)}" for="adduser">Додати клієнта</label>
+    <label class="btn transparent" ng-click="showInConsole()" ng-class="{select: tabClass(1)}" for="adduser">Клієнтська база</label>
     <input type="radio" id="adduser" ng-model="side_window" value="1" style="display: none" />
     <label class="btn transparent" ng-class="{select: tabClass(2)}" for="NNet">Навчання нейронної мережі</label>
     <input type="radio" id="NNet" ng-model="side_window" value="2" style="display: none" />
@@ -58,10 +41,11 @@
       <div class="error" ng-class="{'no-err': !error}">{{error}}</div>
   <div class="content">
     <div class="user_list" ui-view="user-list">  </div>
-    <div class="details" ng-class="{'full': !graphs_flag, 's': graphs_flag}" ui-view="info"></div>
+    <div class="details" ng-class="{'full': graphs_flag === undefined, 's': graphs_flag}" ui-view="info"></div>
+    <div class="side_window edit" ng-class="{'close': showEditFlag === undefined, 'show-with-list': showEditFlag !== undefined}" ui-view="edit"></div>
     <div class="graphs" ng-class="{'close': !graphs_flag, 'show': graphs_flag}" ui-view="graphs"></div>
-    <div class="side_window" ng-class="{'close': true, 'show': false}" ui-view="add_user"></div>
-    <div class="side_window learning" ng-class="{'close': !tabClass(2), 'show': tabClass(2) }" ui-view="learningNNet"> </div>
+    <div class="side_window add_client" ng-class="{'close': !add_client_flag, 'show-with-list': add_client_flag}" ui-view="add_user"></div>
+    <div class="side_window learning" ng-class="{'close': !tabClass(2), 'show-with-list': tabClass(2) }" ui-view="learningNNet"> </div>
     <div class="side_window learning" ng-class="{'close': !tabClass(3), 'show': tabClass(3)}" ui-view="kMeans"> </div>
     <div class="side_window learning" ng-class="{'close': !tabClass(4), 'show': tabClass(4)}" ui-view="hierarchialClustering"> </div>
   </div>

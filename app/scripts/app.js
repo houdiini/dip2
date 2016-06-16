@@ -1,7 +1,6 @@
 var fs = require ("fs");
-var xlsx = require('xlsx');
 var ipc = require('electron').ipcRenderer;
-angular.module('BI', ['ngSanitize', 'nvd3', 'angularResizable', 'ui.router', 'BI.services', 'BI.controllers', 'BI.filters', 'BI.Mongo'])
+angular.module('BI', ['ui.router', 'BI.services', 'BI.controllers', 'BI.filters', 'BI.Mongo'])
 
 .config(function($stateProvider, $urlRouterProvider){
 
@@ -27,6 +26,10 @@ angular.module('BI', ['ngSanitize', 'nvd3', 'angularResizable', 'ui.router', 'BI
                 },
                 'info': {
                     templateUrl: 'templates/details.html',
+                    controller: 'usersCtrl'
+                },
+                'edit': {
+                    templateUrl: 'templates/edit.html',
                     controller: 'usersCtrl'
                 },
                 'graphs': {

@@ -11,6 +11,8 @@ $color_text_btn: #fff;
 
 $border_settings: 1px solid $color_border;
 
+$listWidth: 175px;
+
 $padding_size: 5px;
 
 * {
@@ -20,6 +22,20 @@ $padding_size: 5px;
 body {
 	background: $color_bg;
 	color: $color_text;
+}
+
+.color_red { color: rgb(205, 56, 56) !important; }
+.color_blue { color: rgb(36, 103, 158) !important; }
+.color_green { color: rgb(42, 208, 98) !important; }
+
+span.red {
+	color: rgb(205, 56, 56);
+	border-bottom: rgb(205, 56, 56);
+}
+
+span.green {
+	color: rgb(42, 208, 98);
+	border-bottom: rgb(42, 208, 98);
 }
 
 .error {
@@ -56,12 +72,17 @@ body > .content {
 	display: none;
 }
 
+// icons
 .icon {
 	display: inline-block;
 	margin-top: 5px;
 	width: 1em;
 	height: 1em;
 	fill: currentColor;
+}
+
+.icon-more_vert {
+	margin: 0;
 }
 
 .separator {
@@ -89,6 +110,13 @@ body > .content {
 	padding: 7px;
 	// margin: auto;
 	background: $color_btn;
+	&.yellow {
+		background: #F4EA84;
+		color: $color_text;
+		&:hover {
+			background: #F5C367;
+		}
+	}
 	&.btn-green {
 		background: #6db93f;
 		&:hover {
@@ -111,7 +139,7 @@ body > .content {
 	&.sticky {
 		position: absolute;
 		height: 100%;
-		padding-top: 36%;
+		// padding-top: 36%;
 		top: 0;
 		&.right {
 			right: 0;
@@ -180,6 +208,7 @@ body >.tools {
 
 .prognose {
 	display: flex;
+	flex-flow: column nowrap;
 	justify-content: center;
 	font-size: 14px;
 }
@@ -187,11 +216,12 @@ body >.tools {
 
 .field {
 		display: flex;
-		flex-flow: row wrap;
+		flex-flow: row nowrap;
 		flex: 1;
 		position: relative;
 		width: 100%;
 		padding: 10px;
+		overflow: hidden;
 	&.bad {
 			&:after {
 				content: "!";
@@ -318,7 +348,8 @@ body >.tools {
 		}
 	}
 	&.close {
-		right: calc(-50% + 170px);
+		// right: calc(-50% + 170px);
+		right: 100%;
 	}
 	&.show {
 		right: 0;
@@ -330,6 +361,7 @@ body >.tools {
 
 .user_list {
     min-width: 145px;
+		width: $listWidth;
     height: 100%;
     position: absolute;
     float: left;
@@ -337,7 +369,32 @@ body >.tools {
     background: $color_main;
     overflow: hidden;
     text-align: left;
+		.editMenu {
+
+			position: absolute;
+			top: 0;
+			background: #fff;
+			width: calc(100% - 20px);
+			transition: left .3s;
+			.btn {
+				width: 50%;
+				float: left;
+				.icon {
+					width: .8em;
+					height: .8em;
+				}
+				box-sizing: border-box;
+				padding: 5px 0px;
+			}
+			&.close {
+				left: 100%;
+			}
+			&.show {
+				left: 0;
+			}
+		}
     .wrapper > .header {
+
     	text-align: center;
     	padding: 0;
     	border-bottom: $border_settings;
@@ -346,11 +403,13 @@ body >.tools {
     	position: absolute;
     	font-size: .9em;
     	width: 100%;
-    	height: calc(100% - 60px);
+    	height: 100%;
 	    overflow-y: scroll;
 	    text-align: left;
     	.item {
+				position: relative;
     		padding: $padding_size;
+				transition: all .2s;
     		&:hover {
 				background: $color_hover;
     		}
@@ -380,19 +439,58 @@ body >.tools {
     }
 }
 
+.wrapper {
+	header {
+		width: 100%;
+		padding: 10px;
+		background: $color_akcent;
+		border-bottom: $border_settings
+	}
+}
+
 
 //	Details
 
 .details {
-	width: 50%;
-	margin-left: 145px;
+	width: calc('100% - 175px');
+	margin-left: $listWidth;
 	padding: 10px;
 	position: absolute;
 	height: 100%;
 	overflow-y: scroll;
 	transition: all .25s;
+	.mes-info {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-flow: column nowrap;
+		align-items: center;
+		justify-content: center;
+		background: transparent;
+		font-size: 210px;
+		color: rgb(98, 98, 98);
+		.message {
+			margin-top: 30px;
+			font-size: 25px;
+		}
+	}
 	&.full {
-		width: calc(100% - 170px);
+		width: calc(100% - 175px);
+		.mes-info {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			flex-flow: column nowrap;
+			align-items: center;
+			justify-content: center;
+			background: transparent;
+			font-size: 210px;
+			color: rgb(98, 98, 98);
+			.message {
+				margin-top: 30px;
+				font-size: 25px;
+			}
+		}
 	}
 	.wrapper {
 		width: 100%;
@@ -443,54 +541,71 @@ body >.tools {
 }
 
 
-// Add CLIENT
+
+// SIDE WINDOWS
 
 .side_window {
+	top: 0;
 	width: 100%;
 	height: 100%;
 	position: absolute;
 	display: flex;
 	flex-flow: column nowrap;
 	transition: left .25s;
+
+	.mes-info {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-flow: column nowrap;
+		align-items: center;
+		justify-content: center;
+		background: transparent;
+		font-size: 210px;
+		color: rgb(98, 98, 98);
+		.message {
+			margin-top: 30px;
+			font-size: 25px;
+		}
+	}
+
 	.wrapper {
 		display: flex;
 		flex-flow: column nowrap;
 		width: 100%;
 		height: 100%;
-		padding: 0px;
-		background: $color_main;
+		padding: 10px;
+		background: $color_bg;
 		position: absolute;
 		z-index: 20;
 		left: 0;
+
+		.header {
+			border: $border_settings;
+		}
 		& > * {
 			display: flex;
+			align-items: center;
 		}
 		.content {
+			border: $border_settings;
+			border-top: none;
+			padding: 10px;
+			background: $color_main;
+			border-top: none;
+			border-bottom: none;
+
 			flex: 1;
 			flex-flow: column nowrap;
 			align-content: center;
 			justify-content: space-around;
 			overflow-y: scroll;
-			.footer {
-				display: flex;
-				flex-flow: row;
-				margin-top: 10px;
-				align-items: stretch;
-				align-content: stretch;
-				height: 40px;
-				justify-content: center;
-				.btn {
-					display: flex;
-					flex: 1;
-					justify-content: center;
-					align-items: center;
-				}
-			}
 		}
 		& > footer {
 			display: flex;
 			align-self: flex-end;
 			align-items: center;
+
 
 			padding-left: 10px;
 			// margin-top: 10px;
@@ -500,7 +615,37 @@ body >.tools {
 			background: $color_akcent;
 			font-size: 12px;
 		}
+		.footer {
+			display: flex;
+			flex-flow: row;
+			// margin-top: 10px;
+			align-items: stretch;
+			align-content: stretch;
+			height: 40px;
+			justify-content: center;
+			border: $border_settings;
+			border-top: none;
+			.btn {
+				display: flex;
+				flex: 1;
+				justify-content: center;
+				align-items: center;
+			}
+		}
 	}
+
+	.learning {
+		.wrapper {
+		flex-flow: column nowrap;
+		align-items: flex-start;
+		.prognose {
+			display: flex;
+			flex-flow: column nowrap;
+		}
+	}
+	}
+
+
 	.field {
 		width: 100%;
 		min-height: 30px;
@@ -510,7 +655,20 @@ body >.tools {
 	&.close {
 		left: 100%;
 	}
+	&.show-with-list {
+		left: $listWidth;
+		top: 0;
+		width: calc(100% - 175px);
+	}
+
 	&.show {
+		top: 0;
 		left: 0;
 	}
+	//side_window
+	&.add_client {
+		top: 0px;
+	}
+
+
 }
