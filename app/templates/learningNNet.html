@@ -1,12 +1,24 @@
 <div class="wrapper">
     <div class="mes-info" ng-if="activeUser === undefined">
-      <svg class="icon icon-undo2"><use xlink:href="#icon-undo2"></use></svg>
+      <svg class="icon icon-point-left"><use xlink:href="#icon-point-left"></use></svg>
       <span class="message">Оберіть клієнта з бази даних!</span>
     </div>
     <div class="content" ng-keydown="actionKey($event)" ng-if="activeUser !== undefined">
       <div class="prognose" id="prognose">
-        <span>Результат роботи нейронної мережі:</span>
-        <p>{{resultNeuralNetwork}}</p>
+        <header>Результат роботи нейронної мережі:</header>
+        <p ng-bind-html="resultNeuralNetwork"></p>
+      </div>
+      <div class="bottom">
+        <header>Параметри на які варто звернути увагу</header>
+        <table ng-if="bedParams[0]">
+      		<tbody>
+            <tr ng-repeat="par in bedParams">
+              <td>
+                {{par}}
+              </td>
+            </tr>
+      		</tbody>
+      	</table>
       </div>
     </div>
 </div>

@@ -1,0 +1,41 @@
+<div class="wrapper">
+	<div class="header">
+		<span class="btn" ng-click="doKMeans()">Згенерувати кластери за допомогою алгоритма k-means</span>
+		<span class="btn yellow" ng-click="doHierarchialClustering()">Згенерувати кластери за допомогою ієрархічного алгоритма</span>
+	</div>
+	<div class="mes-info" ng-if="clasters === undefined" >
+		<svg class="icon icon-undo2"><svg class="icon icon-point-up"><use xlink:href="#icon-point-up"></use></svg>
+		<span class="message">Оберіть алгоритм формування кластерів!</span>
+		<p style="font-size: 10px">{{clasters.clusters[0]}}</p>
+	</div>
+
+	<div class="row">
+		<div class="user_list" ng-if="clasters !== undefined">
+			<div class="header" ng-class="{green: db.users[ clasters.clusters[0][0] ].good > .5, red: db.users[ clasters.clusters[0][0] ].good <= .5}"> {{db.users[ clasters.clusters[0][0] ].good > .5 ? 'Благонадійні' : 'Неблагонадійні'}}</div>
+			<div class="ui middle aligned selection list">
+				<div class="item" ng-click="showClient(db.users[index])" ng-class="{select: db.users.indexOf(item) === activeUser}" ng-repeat="index in clasters.clusters[0] | orderBy | startWith:beginF |limitTo:100" id="{{i}}">
+					{{db.users[index].name}}
+				</div>
+			</div>
+			<div class="footer">
+				<span class="nav" ng-click="nav('prev', 1)"><svg class="icon icon-skip_previous"><use xlink:href="#icon-skip_previous"></use></svg></span>
+				<span>{{beginF}}-{{beginF+1*100 > clasters.clusters[0].length ? clasters.clusters[0].length : beginF+1*100 }}/{{clasters.clusters[0].length}}</span>
+				<span class="nav" ng-click="nav('next', 1)"><svg class="icon icon-skip_previous"><use xlink:href="#icon-skip_next"></use></svg></span>
+			</div>
+		</div>
+
+		<div class="user_list" ng-if="clasters !== undefined">
+			<div class="header" ng-class="{green: db.users[ clasters.clusters[1][0] ].good > .5, red: db.users[ clasters.clusters[1][0] ].good <= .5}"> {{db.users[ clasters.clusters[1][0] ].good > .5 ? 'Благонадійні' : 'Неблагонадійні'}}</div>
+			<div class="ui middle aligned selection list">
+				<div class="item" ng-click="showClient(db.users[index])" ng-class="{select: db.users.indexOf(item) === activeUser}" ng-repeat="index in clasters.clusters[1] | orderBy:'name' | startWith:beginS |limitTo:100" id="{{i}}">
+					{{db.users[index].name}}
+				</div>
+			</div>
+			<div class="footer">
+				<span class="nav" ng-click="nav('prev', 2)"><svg class="icon icon-skip_previous"><use xlink:href="#icon-skip_previous"></use></svg></span>
+				<span>{{beginS}}-{{beginS+1*100 > clasters.clusters[1].length ? clasters.clusters[1].length : beginS+1*100 }}/{{clasters.clusters[1].length}}</span>
+				<span class="nav" ng-click="nav('next', 2)"><svg class="icon icon-skip_previous"><use xlink:href="#icon-skip_next"></use></svg></span>
+			</div>
+		</div>
+	</div>
+</div>

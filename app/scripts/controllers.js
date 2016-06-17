@@ -1,5 +1,6 @@
 var fs = require('fs');
 
+const ipcRend = require('electron').ipcRenderer ;
 var randomName = require('random-name');
 var kmeans = require('machine_learning');
 var cluster = require('hierarchical-clustering');
@@ -124,7 +125,8 @@ angular.module('BI.controllers', [])
 
 
   try {
-      var db = JSON.parse(fs.readFileSync('./bd.txt'));
+			var db = JSON.parse(localStorage['data']);
+      // var db = JSON.parse(fs.readFileSync('./bd.txt'));
 			$rootScope.db.data = db;
       $rootScope.db.users = _.map(db, function(o){return complication(o)});
   } catch (e) { console.warn(e) }
@@ -262,13 +264,14 @@ angular.module('BI.controllers', [])
         console.log($rootScope.activeUser);
     }
 
-    $scope.openDB = function(){
+    $rootScope.openDB = function(){
 			try {
 				console.log($rootScope.db.url);
 				Mongo.connect($rootScope.db.url);
 	    	console.info('Conected!');
 				var find = Mongo.findAll(function (err, users) {
 					if (err) return console.error(err);
+					localStorage['data'] = JSON.stringify(users);
 					fs.writeFile('bd.txt', JSON.stringify(users));
 					$rootScope.db.users = _.clone(_.map(users, function(o){return complication(o)}));
 					console.info('Loaded!');
@@ -276,6 +279,7 @@ angular.module('BI.controllers', [])
 			} catch (e) {
 				var find = Mongo.findAll(function (err, users) {
 		      if (err) return console.error(err);
+					localStorage['data'] = JSON.stringify(users);
 					fs.writeFile('bd.txt', JSON.stringify(users));
 					$rootScope.db.users = _.clone(_.map(users, function(o){return complication(o)}));
 					if (!localStorage["NeuralNetwork"]) { NN.train($rootScope.db.users) }
@@ -403,35 +407,44 @@ angular.module('BI.controllers', [])
 					console.log(client);
 					var name = client.name;
 					var res = NN.main.run(simple(client));
+					$rootScope.bedParams = [];
 					if ( res > .9 ) {
 						// console.log(client);
-						$rootScope.resultNeuralNetwork = 'Я (нейронна мережа) розглянула дитя боже ' + name.toString() +
-						' й пришла до висновку, що ця невинна істота, '+
-						'не заслуговує но відмову. Цьому клієнту я рекомендую видати кредит! В характеристиці я не знайшла причини по якій треба відмовити цій людинкі!';
+						$rootScope.resultNeuralNetwork = 'Я (нейронна мережа) розглянула дитя боже <span class="color_blue">' + name.toString() +
+						'</span> й пришла до висновку, що ця невинна істота, '+
+						'не заслуговує но відмову. <span class="color_green">Цьому клієнту я рекомендую видати кредит!</span> В характеристиці я не знайшла причини по якій треба відмовити цій людинкі!';
 						} else
 						if ( res > .5 ) {
 						console.log(client);
-						$rootScope.resultNeuralNetwork = 'Доброго здоров\'я, користувач! Я (нейронна мережа, але друзі називають мене Лора) розглянула характеристику обраного клієнта, а саме - ' + name.toString() +
-						' й пришла до висновку, що, все-таки, йому можна надати кредит, хоч не без ризику, але ризик не великий!';
+						$rootScope.resultNeuralNetwork = 'Доброго здоров\'я, користувач! Я (нейронна мережа, але друзі називають мене Лора) розглянула характеристику обраного клієнта, а саме - <span class="color_blue">' + name.toString() +
+						'</span> й пришла до висновку, що, все-таки, <span class="greeen">йому можна надати кредит</span>, хоч не без ризику, але ризик не великий!';
 						} else
 						if (res >= .4) {
-						$rootScope.resultNeuralNetwork = 'Доброго здоров\'я, користувач! Я (нейронна мережа, але друзі називають мене Лора) розглянула характеристику обраного клієнта, а саме - ' + name.toString() +
-						' й пришла до висновку, що, все-таки, саме йому, кредит краще не давати, хоч може й здатись, що клієнт, як людина не погана, але як надійни позичальник такий-собі!';
+						$rootScope.resultNeuralNetwork = 'Доброго здоров\'я, користувач! Я (нейронна мережа, але друзі називають мене Лора) розглянула характеристику обраного клієнта, а саме - <span class="color_blue">' + name.toString() +
+						'</span> й пришла до висновку, що, все-таки, саме йому, <span class="red">кредит краще не давати</span>, хоч може й здатись, що клієнт, як людина не погана, але як надійни позичальник такий-собі!';
 						} else
 						if (res < .4) {
-							$rootScope.resultNeuralNetwork = 'Доброго здоров\'я, користувач! Я (нейронна мережа, але друзі називають мене Лора) розглянула характеристику обраного клієнта, а саме - ' + name.toString() +
-							' й пришла до висновку, що, йому я не дала б ні копійочки, краще пожертвуйте ці кошти на благодійність, накорміть безхатька, вуличного кота чи собаку, а йому - поясніть, що гроші не бачить йому, як на руці шостого пальця!';
-
-							if (client.creditHistory == 'негативна') {
-								$rootScope.resultNeuralNetwork += 'Слід відмітити, що в даного користувача не все гаразд з кредитною історією. '
-							}
-							if (client.post == 'безробітний') {
-								$rootScope.resultNeuralNetwork += 'В клієнта певні складнощі з роботою, а саме - він безробітний. '
-							}
-							if (client.live == 'аренда' && client.residence == 'менше року') {
-								$rootScope.resultNeuralNetwork += 'В бідної людини ситуація з місцем проживання могла бути й краща, хоча може бути й таке, що людина тільки переїхала в цілому цей факт не внушає довіри. '
-							}
-
+							$rootScope.resultNeuralNetwork = 'Доброго здоров\'я, користувач! Я (нейронна мережа, але друзі називають мене Лора) розглянула характеристику обраного клієнта, а саме - <span class="color_blue">' + name.toString() +
+							'</span> й пришла до висновку, що, йому я не дала б ні копійочки, <span class="red">це не благонадійний клієнт</span>, краще пожертвуйте ці кошти на благодійність, накорміть безхатька, вуличного кота чи собаку, а йому - поясніть, що гроші не бачить йому, як на руці шостого пальця!';
+						}
+						if (client.creditHistory == 'негативна') {
+							$rootScope.resultNeuralNetwork += ' Слід відмітити, що <span class="red">в даного користувача не все гаразд з <b>кредитною історією.</b></span> '
+							$rootScope.bedParams.push('Погана кредитна історія');
+						}
+						if (client.post == 'безробітний') {
+							$rootScope.resultNeuralNetwork += ' В клієнта певні складнощі з роботою, а саме - він <span class="red"><b>безробітний.</b></span> '
+							$rootScope.bedParams.push('Безробітний(-на)');
+						}
+						if (client.live == 'аренда' && client.residence == 'менше року') {
+							$rootScope.resultNeuralNetwork += ' В бідної людини <span class="red">ситуація з місцем проживання могла бути й краща</span>, хоча може бути й таке, що людина тільки переїхала в цілому цей факт не внушає довіри. '
+							$rootScope.bedParams.push('Аренда житла');
+							$rootScope.bedParams.push('Термін проживання на останньому місці - менше року');
+						}
+						if (client.education == 'середня') {
+							$rootScope.bedParams.push('Середня освіта');
+						}
+						if (client.relationship == 'розведений(-на)') {
+							$rootScope.bedParams.push('Розведений(-на)');
 						}
 		});
 
@@ -502,40 +515,6 @@ angular.module('BI.controllers', [])
     }
     //tak eto ne doljno bit'
 
-		function means(data, clusters, k) {
-			means = [];
-			console.log(clusters);
-														console.log(data);
-			for(i=0 ; i<k ; i++) {
-					var avgs = [];
-					for(j=0 ; j<data[0].length ; j++)
-							avgs.push(0.0);
-					if(clusters[i].length > 0) {
-							for(j=0 ; j<clusters[i].length ; j++) {
-									for(l=0 ; l<data[0].length ; l++) {
-											avgs[l] += data[clusters[i][j]][l];
-									}
-							}
-							for(j=0 ; j<data[0].length ; j++) {
-									avgs[j] /= clusters[i].length;
-							}
-							means[i] = avgs;
-					}
-			}
-			return means;
-		}
-
-    function distance(a, b) {
-      if (a.length !== b.length) {
-        return (new Error('The vectors must have the same length'));
-      }
-      let d = 0.0;
-      for (let i = 0, max = a.length; i < max; ++i) {
-        d += Math.pow((a[i] - b[i]), 2);
-      }
-      return Math.sqrt(d);
-    }
-
     var result;
     $rootScope.message = 'Введіть дані';
 
@@ -596,10 +575,6 @@ angular.module('BI.controllers', [])
             distance : {type : "pearson"}
         });
     }
-
-		function linkage(distances) {
-		  return Math.min.apply(null, distances);
-		}
 
 		$scope.doHierarchialClustering = function(){
 			var vector = new Array();
@@ -662,11 +637,37 @@ angular.module('BI.controllers', [])
 				 }
     }
 
+		$rootScope.refresh = function(){
+			try {
+				console.log($rootScope.db.url);
+				Mongo.connect($rootScope.db.url);
+	    	console.info('Conected!');
+				var find = Mongo.findAll(function (err, users) {
+					if (err) return console.error(err);
+					localStorage['data'] = JSON.stringify(users);
+					// fs.writeFile('bd.txt', JSON.stringify(users));
+					$rootScope.db.users = _.clone(_.map(users, function(o){return complication(o)}));
+					console.info('Loaded!');
+				});
+			} catch (e) {
+				var find = Mongo.findAll(function (err, users) {
+		      if (err) return console.error(err);
+					localStorage['data'] = JSON.stringify(users);
+					// fs.writeFile('bd.txt', JSON.stringify(users));
+					$rootScope.db.users = _.clone(_.map(users, function(o){return complication(o)}));
+					if (!localStorage["NeuralNetwork"]) { NN.train($rootScope.db.users) }
+					else { NN.open() };
+		      console.info('Data are refresh');
+		    });
+			}
+		}
+
     $rootScope.addClientToDB = function(){
 				$rootScope.newClient.good = NN.main.run(simple($rootScope.newClient))[0];
 				console.log($rootScope.newClient);
         Mongo.addClient(simpleLikeObject($rootScope.newClient))
-				$rootScope.db.users.push(simpleLikeObject($rootScope.newClient));
+				$rootScope.db.users.push($rootScope.newClient);
+				$rootScope.openDB();
     }
 
 		$rootScope.updateClientInDB = function(){
@@ -675,32 +676,194 @@ angular.module('BI.controllers', [])
 			var id = $rootScope.showEditFlag;
 			console.log(id);
 			Mongo.updateClient($rootScope.db.data[id], simpleLikeObject($rootScope.editClient));
+			$rootScope.openDB();
 		}
 
 		$rootScope.removeClientFromDB = function(id){
 			console.log('del ', id);
 			Mongo.removeClient($rootScope.db.data[id]);
-			$rootScope.db.users[id] = undefined;
+			$rootScope.db.users = $rootScope.db.users.slice(0, id).concat($rootScope.db.users.slice(id+1, Infinity));
+			$rootScope.openDB();
 		}
 
-    $scope.doKMeans = function(){
-        var vector = new Array();
-        for (var i = 1, l = trainerSet.length; i < l; i++) {
-            vector[i-1] = _.clone(trainerSet[i].input);
-            vector[i-1].push(trainerSet[i].output[0]);
-        }
-
-        result = kmeans.kmeans.cluster({
-            data : vector,
-            k : 2,
-            epochs: 100,
-            distance : {type : "pearson"}
-        });
-    }
 
 }) /// prev coontroller
 
+//	klasters
+//	klasters
+//	klasters
+.controller('klasterCtrl', function($scope, $rootScope){
+	$scope.beginF = 0;
+	$scope.beginS = 0;
+	$scope.nav = function (direct, list) {
+		console.log(direct, list);
+			if (direct === 'next') {
+					if (list === 1) {
+						if ($scope.beginF+10 < $scope.clasters.clusters[0].length)
+								$scope.beginF += 10;
+							} else {
+								if ($scope.beginS+10 < $scope.clasters.clusters[1].length)
+										$scope.beginS += 10;
+							}
+			} else {
+				if (list === 1) {
+					if ($scope.beginF-10 >= 0)
+							$scope.beginF -= 10;
+						} else {
+							if ($scope.beginS-100 >= 0)
+									$scope.beginS -= 100;
+						}
+			}
+	}
 
-.controller('kMeansCtrl', function($scope, $rootScope){
-    // kmeans()
+	$scope.showClient = function(client) {
+		ipcRend.send('show-client', JSON.stringify(client));
+	}
+
+	ipcRend.on('show-client-back', (event, arg) => {
+	  console.log(arg); // prints "pong"
+		ipcRend.send('show-client-info'. arg);
+	});
+
+	$scope.doKMeans = function(){
+		var clients = $rootScope.db.users;
+		var trainerSet = [];
+		for (var i = 0, l = clients.length; i < l; i++) {
+      if (clients[i].good !== undefined && !_.isNaN(clients[i].good)) {
+				var ar = simple(clients[i]);
+				ar.push(clients[i].good);
+				trainerSet.push(ar);
+      }
+    }
+    console.log(trainerSet);
+		result = kmeans.kmeans.cluster({
+			data : trainerSet,
+			k : 2,
+			epochs: 100,
+			distance : {type : "pearson"}
+		});
+
+		$scope.clasters = result;
+		console.log(result);
+	};
+
+
+
+
+	function means(data, clusters, k) {
+		means = [];
+		console.log(clusters);
+													console.log(data);
+		for(i=0 ; i<k ; i++) {
+				var avgs = [];
+				for(j=0 ; j<data[0].length ; j++)
+						avgs.push(0.0);
+				if(clusters[i].length > 0) {
+						for(j=0 ; j<clusters[i].length ; j++) {
+								for(l=0 ; l<data[0].length ; l++) {
+										avgs[l] += data[clusters[i][j]][l];
+								}
+						}
+						for(j=0 ; j<data[0].length ; j++) {
+								avgs[j] /= clusters[i].length;
+						}
+						means[i] = avgs;
+				}
+		}
+		return means;
+	}
+
+
+	$scope.doHierarchialClustering = function(){
+		var clients = $rootScope.db.users;
+		var trainerSet = [];
+		for (var i = 0, l = clients.length; i < l; i++) {
+      if (clients[i].good !== undefined && !_.isNaN(clients[i].good)) {
+				var ar = simple(clients[i]);
+				ar.push(clients[i].good);
+				trainerSet.push(ar);
+      }
+    }
+
+		var levels = cluster({
+		  input: trainerSet,
+			distance: distance,
+		  linkage: linkage,
+		  minClusters: 2
+		});
+
+		var clusters = _.last(levels);
+		// clusters.means = means(trainerSet, clusters.clusters, 2);
+		$scope.clasters = clusters;
+		console.log(clusters);
+	}
+
+	function linkage(distances) {
+		return Math.min.apply(null, distances);
+	}
+
+	function distance(a, b) {
+		if (a.length !== b.length) {
+			return (new Error('The vectors must have the same length'));
+		}
+		let d = 0.0;
+		for (let i = 0, max = a.length; i < max; ++i) {
+			d += Math.pow((a[i] - b[i]), 2);
+		}
+		return Math.sqrt(d);
+	}
+
+
+	function simple(cur) {
+			var input = [0, 0, 0, 0, 0, 0, 0, 0];
+			switch (cur.live) {
+					case 'власне житло': input[0] = 0; break;
+					case 'муніципальне житло': input[0] = .5; break;
+					case 'аренда': input[0] = 1; break;
+					default: input[0] = cur.live;
+			}
+
+			switch (cur.relationship) {
+					case 'одружений(-на)': input[1] = 0; break;
+					case 'не одружений(-на)': input[1] = .5; break;
+					case 'розведений(-на)': input[1] = 1; break;
+					default: input[1] = cur.relationship;
+			}
+
+			switch (cur.education) {
+					case 'вищa': input[2] = 0; break;
+					case 'молодший спеціаліст': input[2] = .5; break;
+					case 'середнє': input[2] = 1; break;
+					default: input[2] = cur.education;
+			}
+
+			switch (cur.creditHistory) {
+					case 'позитивна': input[3] = 0; break;
+					case 'немає даних': input[3] = .5; break;
+					case 'негативна': input[3] = 1; break;
+					default: input[3] = cur.creditHistory;
+			}
+
+			switch (cur.post) {
+					case 'займає керівну посаду': input[4] = 0; break;
+					case 'рядовий співробітник': input[4] = .5; break;
+					case 'безробітний': input[4] = 1; break;
+					default: input[4] = cur.post;
+			}
+
+
+			switch (cur.residence) {
+					case 'менше року': input[5] = 1; break;
+					case '1-5 років': input[5] = .5; break;
+					case '> 5 років': input[5] = 0; break;
+			}
+
+
+			switch (cur.exp) {
+					case 'менше року': input[6] = 1; break;
+					case '1-3 років': input[6] = .5; break;
+					case '> 3 років': input[6] = 0; break;
+			}
+			return input;
+	}
 });

@@ -31,11 +31,11 @@
   <form class="tools">
     <label class="btn transparent" ng-click="showInConsole()" ng-class="{select: tabClass(1)}" for="adduser">Клієнтська база</label>
     <input type="radio" id="adduser" ng-model="side_window" value="1" style="display: none" />
-    <label class="btn transparent" ng-class="{select: tabClass(2)}" for="NNet">Навчання нейронної мережі</label>
+    <label class="btn transparent" ng-class="{select: tabClass(2)}" for="NNet">Прогнозування з нейронною мережею</label>
     <input type="radio" id="NNet" ng-model="side_window" value="2" style="display: none" />
-    <label class="btn transparent" ng-class="{select: tabClass(3)}" for="kmeans">Метод k-means</label>
+    <label class="btn transparent" ng-class="{select: tabClass(3)}" for="kmeans">Кластери</label>
     <input type="radio" id="kmeans" ng-model="side_window" value="3" style="display: none" />
-    <label class="btn transparent" ng-class="{select: tabClass(4)}" for="hierarchical">Ієрархічний метод</label>
+    <label class="btn transparent" ng-class="{select: tabClass(4)}" for="hierarchical">Гістограми</label>
     <input type="radio" id="hierarchical" ng-model="side_window" value="4" style="display: none" />
   </form>
       <div class="error" ng-class="{'no-err': !error}">{{error}}</div>
@@ -46,7 +46,7 @@
     <div class="graphs" ng-class="{'close': !graphs_flag, 'show': graphs_flag}" ui-view="graphs"></div>
     <div class="side_window add_client" ng-class="{'close': !add_client_flag, 'show-with-list': add_client_flag}" ui-view="add_user"></div>
     <div class="side_window learning" ng-class="{'close': !tabClass(2), 'show-with-list': tabClass(2) }" ui-view="learningNNet"> </div>
-    <div class="side_window learning" ng-class="{'close': !tabClass(3), 'show': tabClass(3)}" ui-view="kMeans"> </div>
+    <div class="side_window klasters" ng-class="{'close': !tabClass(3), 'show': tabClass(3)}" ui-view="klasters"> </div>
     <div class="side_window learning" ng-class="{'close': !tabClass(4), 'show': tabClass(4)}" ui-view="hierarchialClustering"> </div>
   </div>
 

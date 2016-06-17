@@ -70,8 +70,22 @@ body > .content {
   background: #F1F1F1;
   margin: 0; }
 
+header,
+.header {
+  display: flex;
+  flex-flow: row nowrap;
+  align-content: stretch;
+  padding: 0;
+  width: 100%; }
+  header .btn,
+  .header .btn {
+    min-height: 40px; }
+
 .btn {
-  display: inline-block;
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
   border: none;
   background: transparent;
   font-size: .8em;
@@ -149,8 +163,13 @@ body > .tools {
 .prognose {
   display: flex;
   flex-flow: column nowrap;
-  justify-content: center;
   font-size: 14px; }
+
+.bottom {
+  display: flex;
+  flex-flow: column;
+  flex: 1;
+  width: 100%; }
 
 .field {
   display: flex;
@@ -433,11 +452,12 @@ body > .tools {
     position: absolute;
     z-index: 20;
     left: 0; }
+    .side_window .wrapper > .header {
+      min-height: 40px; }
     .side_window .wrapper .header {
       border: 1px solid #c6c6c6; }
     .side_window .wrapper > * {
-      display: flex;
-      align-items: center; }
+      display: flex; }
     .side_window .wrapper .content {
       border: 1px solid #c6c6c6;
       border-top: none;
@@ -474,12 +494,69 @@ body > .tools {
         flex: 1;
         justify-content: center;
         align-items: center; }
-  .side_window .learning .wrapper {
+  .side_window.klasters .wrapper {
+    padding: 0; }
+  .side_window.klasters .user_list {
+    position: relative;
+    display: flex;
     flex-flow: column nowrap;
-    align-items: flex-start; }
-    .side_window .learning .wrapper .prognose {
+    align-items: flex-start;
+    flex: 1;
+    height: auto;
+    justify-content: flex-start; }
+    .side_window.klasters .user_list > .header {
+      min-height: 30px;
+      align-items: center;
+      justify-content: center; }
+      .side_window.klasters .user_list > .header.red {
+        background: #e09797; }
+      .side_window.klasters .user_list > .header.green {
+        background: #85d68e; }
+    .side_window.klasters .user_list .ui.list {
+      position: relative;
       display: flex;
       flex-flow: column nowrap; }
+      .side_window.klasters .user_list .ui.list .item {
+        display: flex;
+        align-items: center;
+        min-height: 35px; }
+    .side_window.klasters .user_list > .footer {
+      display: flex;
+      align-content: flex-start;
+      justify-content: space-around;
+      width: 100%;
+      min-height: 25px;
+      height: 25px;
+      font-size: .8em;
+      background: gainsboro;
+      border-top: 1px solid #c6c6c6; }
+      .side_window.klasters .user_list > .footer * {
+        display: flex;
+        align-items: center; }
+        .side_window.klasters .user_list > .footer * .icon {
+          margin: 0; }
+  .side_window.learning .content {
+    padding: 0; }
+  .side_window.learning header {
+    border: 1px solid #c6c6c6;
+    border-left: none;
+    border-right: none; }
+  .side_window.learning table {
+    width: 100%; }
+  .side_window.learning table tr {
+    height: 40px;
+    padding: 10px; }
+  .side_window.learning table tr td {
+    padding: 10px;
+    border-bottom: 1px solid #c6c6c6; }
+  .side_window.learning .wrapper {
+    flex-flow: column nowrap;
+    align-items: flex-start; }
+    .side_window.learning .wrapper .prognose {
+      display: flex;
+      flex-flow: column nowrap; }
+      .side_window.learning .wrapper .prognose p {
+        padding: 10px; }
   .side_window .field {
     width: 100%;
     min-height: 30px;

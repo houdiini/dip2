@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html ng-app='info' lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="../style/style.css"/>
+</head>
+<body ng-controller="infoCtrl">
+
+<script src="../bower_components/angular/angular.js"></script>
+<script src="../bower_components/angular/sanitize.js"></script>
+<script src="../../lib/angular-ui-router.js"></script>
+<script src="../../lib/underscore.js"></script>
+
+
+<script src="../bower_components/ngDraggable/ngDraggable.js"></script>
+
+
+
+  <header>Детальна інформація</header>
+  <div class="content">
+  <table>
+    <tbody>
+      <tr>
+        <td>{{user.name}}</td>
+      </tr>
+      <tr>
+        <td>Проживання</td>
+        <td>
+          <span>{{ user.live }}</span>
+        </td>
+      </tr>
+      <tr>
+        <td>Сімейний стан</td>
+        <td><span>{{ user.relationship }}</span></td>
+      </tr>
+      <tr>
+        <td>Освіта</td>
+        <td><span>{{ user.education }}</span></td>
+      </tr>
+      <tr>
+        <td>Кредитна історія</td>
+        <td><span>{{ user.creditHistory }}</span></td>
+      </tr>
+      <tr>
+        <td>Термін проживання</td>
+        <td><span>{{ user.residence }}</span></td>
+      </tr>
+      <tr>
+        <td>Посада</td>
+        <td><span>{{ user.post }}</span></td>
+      </tr>
+      <tr>
+        <td>Стаж роботи</td>
+        <td><span>{{ user.exp }}</span></td>
+      </tr>
+      <tr>
+        <td>Дата додавання до бази</td>
+        <td><span>{{ user.date | date:'dd-MM-yyyy' }}</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <script>
+    var ipcClientInfo = require('electron').ipcRenderer;
+    app = angular.module('info', [])
+    .controller('infoCtrl', function($scope, $q) {
+      var defer = $q.defer();
+      var getInfo = defer.promise;
+      $scope.user = {};
+      ipcClientInfo.on('show-client-info', function(e, res) {
+        console.log(res);
+        defer.resolve(res);
+        return defer.promise;
+      });
+
+      getInfo.then(function(res){
+        console.log(res);
+        $scope.user = JSON.parse(res);
+      })
+    })
+  </script>
+</body>
+</html>

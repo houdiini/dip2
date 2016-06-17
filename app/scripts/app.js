@@ -1,6 +1,6 @@
 var fs = require ("fs");
 var ipc = require('electron').ipcRenderer;
-angular.module('BI', ['ui.router', 'BI.services', 'BI.controllers', 'BI.filters', 'BI.Mongo'])
+angular.module('BI', ['ui.router', 'ngSanitize', 'BI.services', 'BI.controllers', 'BI.filters', 'BI.Mongo'])
 
 .config(function($stateProvider, $urlRouterProvider){
 
@@ -44,9 +44,9 @@ angular.module('BI', ['ui.router', 'BI.services', 'BI.controllers', 'BI.filters'
                     templateUrl: 'templates/learningNNet.html',
                     controller: 'learningNNetCtrl'
                 },
-                'kMeans': {
-                    templateUrl: 'templates/k-means.html',
-                    controller: 'learningNNetCtrl'      //kMeansCtrl
+                'klasters': {
+                    templateUrl: 'templates/klasters.html',
+                    controller: 'klasterCtrl'      //kMeansCtrl
                 },
                 'hierarchialClustering': {
                     templateUrl: 'templates/hierarchialClustering.html',

@@ -96,11 +96,30 @@ body > .content {
 	margin: 0;
 }
 
+// header
+header,
+.header {
+	display: flex;
+	flex-flow: row nowrap;
+	align-content: stretch;
+	padding: 0;
+
+	width: 100%;
+
+	.btn {
+		min-height: 40px;
+	}
+
+}
+
 
 //	Buttons
 
 .btn {
-	display: inline-block;
+	display: inline-flex;
+	flex: 1;
+	align-items: center;
+	justify-content: center;
 	border: none;
 	background: transparent;
 	font-size: .8em;
@@ -208,9 +227,17 @@ body >.tools {
 
 .prognose {
 	display: flex;
+	// flex: 2;
 	flex-flow: column nowrap;
-	justify-content: center;
+	// justify-content: center;
 	font-size: 14px;
+}
+
+.bottom {
+	display: flex;
+	flex-flow: column;
+	flex: 1;
+	width: 100%;
 }
 
 
@@ -580,12 +607,15 @@ body >.tools {
 		z-index: 20;
 		left: 0;
 
+		& > .header {
+			min-height: 40px;
+		}
+
 		.header {
 			border: $border_settings;
 		}
 		& > * {
 			display: flex;
-			align-items: center;
 		}
 		.content {
 			border: $border_settings;
@@ -634,13 +664,84 @@ body >.tools {
 		}
 	}
 
-	.learning {
+	&.klasters {
+		.wrapper {
+			padding: 0;
+		}
+		.user_list {
+			position: relative;
+			display: flex;
+			flex-flow: column nowrap;
+			align-items: flex-start;
+			flex: 1;
+			height: auto;
+			justify-content: flex-start;
+			& > .header {
+				min-height: 30px;
+				align-items: center;
+				justify-content: center;
+				&.red { background: #e09797;}
+				&.green { background: #85d68e;}
+			}
+			.ui.list {
+				position: relative;
+				// height: calc(100% - 65px);
+				display: flex;
+				// flex: 1;
+				flex-flow: column nowrap;
+				.item {
+					display: flex;
+					align-items: center;
+					min-height: 35px;
+				}
+			}
+			& > .footer {
+				display: flex;
+				// align-self: flex-start;
+				align-content: flex-start;;
+				justify-content: space-around;
+				width: 100%;
+				min-height: 25px;
+		    height: 25px;
+		    font-size: .8em;
+		    background: gainsboro;
+		    border-top: 1px solid #c6c6c6;
+				* {
+					display: flex;
+					align-items: center;
+					.icon {	margin:0;	}
+				}
+			}
+		}
+
+
+	}
+
+	&.learning {
+		.content {
+			padding: 0;
+		}
+		header {
+			border: $border_settings;
+			border-left: none;
+			border-right: none;
+		}
+		table { width: 100%; }
+		table tr {
+			height: 40px;
+			padding: 10px;
+		}
+		table tr td {
+			padding: 10px;
+			border-bottom: $border_settings;
+		}
 		.wrapper {
 		flex-flow: column nowrap;
 		align-items: flex-start;
 		.prognose {
 			display: flex;
 			flex-flow: column nowrap;
+			p { padding: 10px; }
 		}
 	}
 	}
